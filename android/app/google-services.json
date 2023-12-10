@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "218945301609",
+    "project_id": "cookify-97c9a",
+    "storage_bucket": "cookify-97c9a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:218945301609:android:632dd3c1191be8b99486f8",
+        "android_client_info": {
+          "package_name": "com.example.bitirme0"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBov2tdYZlSIqiQyN3PWsOIhfjB0hRytkM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:218945301609:android:0e9c25d7580093c29486f8",
+        "android_client_info": {
+          "package_name": "com.example.flutter_appdeneme"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBov2tdYZlSIqiQyN3PWsOIhfjB0hRytkM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

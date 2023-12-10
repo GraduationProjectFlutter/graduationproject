@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyAocVUWeC8-FDgr37G5t_spUcBNdua0OZs</string>
+	<key>GCM_SENDER_ID</key>
+	<string>218945301609</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.bitirme0.RunnerTests</string>
+	<key>PROJECT_ID</key>
+	<string>cookify-97c9a</string>
+	<key>STORAGE_BUCKET</key>
+	<string>cookify-97c9a.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:218945301609:ios:27f8b5a2e486e3b29486f8</string>
+</dict>
+</plist>
