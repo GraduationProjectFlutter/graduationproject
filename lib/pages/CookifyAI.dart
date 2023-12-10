@@ -40,12 +40,25 @@ class CookifyAI extends StatelessWidget {
                   Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => RecipeDetailsPage(
                       title: recipeData['name'] ?? 'Unnamed Recipe',
-                      rating: recipeData['rating']?.toString() ?? 'N/A',
                       cookTime: recipeData['duration'] ?? 'Unknown',
                       thumbnailUrl:
                           recipeData['url'] ?? 'assets/images/pizza.png',
                       description: recipeData['description'] ??
                           'No description provided.',
+                      difficulty: recipeData['difficulty'] ??
+                          'No description provided.',
+                      creator:
+                          recipeData['addedBy'] ?? 'No description provided.',
+                      creatorID:
+                          recipeData['creatorID'] ?? 'No description provided.',
+                      materials:
+                          recipeData['materials'] ?? 'No description provided.',
+                      recipeID:
+                          recipeData['recipeID'] ?? 'No description provided.',
+                      category:
+                          recipeData['category'] ?? 'No description provided.',
+                      calories:
+                          recipeData['calories'] ?? 'No description provided.',
                     ),
                   ));
                 },

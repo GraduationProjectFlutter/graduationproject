@@ -1,13 +1,9 @@
 import 'package:bitirme0/css.dart';
+import 'package:bitirme0/pages/login.dart';
 import 'package:bitirme0/services/auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
-import 'package:bitirme0/pages/forgotpassword.dart';
-import 'package:bitirme0/pages/home.dart';
-import 'package:bitirme0/pages/login.dart';
-import 'package:bitirme0/pages/register.dart';
 
 class RegistrationPage extends StatefulWidget {
   const RegistrationPage({super.key});

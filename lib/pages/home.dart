@@ -100,10 +100,7 @@ class _HomePageState extends State<HomePage> {
         actions: [
           IconButton(
             icon: Icon(Icons.search),
-            onPressed: () {
-              // Burada arama çubuğunu açma veya başka bir işlemi gerçekleştirme kodunu ekleyebilirsiniz.
-              // Örneğin: showSearch(context: context, delegate: YourSearchDelegate());
-            },
+            onPressed: () {},
           ),
         ],
       ),
@@ -169,6 +166,11 @@ class _HomePageState extends State<HomePage> {
                       ],
                     ),
                   ],
+                ),
+                SearchBar(
+                  backgroundColor: MaterialStateProperty.all(Colors.white),
+                  leading: const Icon(Icons.search),
+                  // other arguments
                 ),
                 Expanded(
                   child: seeAll(),

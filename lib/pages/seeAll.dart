@@ -2,7 +2,6 @@ import 'package:bitirme0/pages/recipeDetailsPage.dart';
 import 'package:bitirme0/pages/recipe_card.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'dart:math';
 
 class seeAll extends StatefulWidget {
   @override
@@ -61,11 +60,23 @@ class _SeeAllState extends State<seeAll> {
               Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => RecipeDetailsPage(
                   title: recipeData['name'] ?? 'Unnamed Recipe',
-                  rating: recipeData['rating']?.toString() ?? 'N/A',
                   cookTime: recipeData['duration'] ?? 'Unknown',
                   thumbnailUrl: recipeData['url'] ?? 'assets/images/pizza.png',
                   description:
                       recipeData['description'] ?? 'No description provided.',
+                  difficulty:
+                      recipeData['difficulty'] ?? 'No description provided.',
+                  creator: recipeData['addedBy'] ?? 'No description provided.',
+                  creatorID:
+                      recipeData['creatorID'] ?? 'No description provided.',
+                  materials:
+                      recipeData['materials'] ?? 'No description provided.',
+                  recipeID:
+                      recipeData['recipeID'] ?? 'No description provided.',
+                  category:
+                      recipeData['category'] ?? 'No description provided.',
+                  calories:
+                      recipeData['calories'] ?? 'No description provided.',
                 ),
               ));
             },
