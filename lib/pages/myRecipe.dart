@@ -21,7 +21,7 @@ class MyRecipe extends StatelessWidget {
               title: title,
               rating: rating,
               cookTime: cookTime,
-              thumbnailAsset: thumbnailAsset,
+              thumbnailUrl: thumbnailAsset,
             ),
             SizedBox(height: 20),
             Text(

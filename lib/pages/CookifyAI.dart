@@ -42,8 +42,8 @@ class CookifyAI extends StatelessWidget {
                       title: recipeData['name'] ?? 'Unnamed Recipe',
                       rating: recipeData['rating']?.toString() ?? 'N/A',
                       cookTime: recipeData['duration'] ?? 'Unknown',
-                      thumbnailAsset:
-                          recipeData['image'] ?? 'assets/images/pizza.png',
+                      thumbnailUrl:
+                          recipeData['url'] ?? 'assets/images/pizza.png',
                       description: recipeData['description'] ??
                           'No description provided.',
                     ),
@@ -53,8 +53,8 @@ class CookifyAI extends StatelessWidget {
                   title: recipeData['name'] ?? 'Unnamed Recipe',
                   rating: recipeData['rating']?.toString() ?? 'N/A',
                   cookTime: recipeData['duration'] ?? 'Unknown',
-                  thumbnailAsset:
-                      recipeData['image'] ?? 'assets/default_recipe_image.png',
+                  thumbnailUrl:
+                      recipeData['url'] ?? 'assets/default_recipe_image.png',
                 ),
               );
             },
