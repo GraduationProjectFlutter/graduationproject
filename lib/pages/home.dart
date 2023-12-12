@@ -32,10 +32,10 @@ class _HomePageState extends State<HomePage> {
         if (querySnapshot.docs.isNotEmpty) {
           return querySnapshot.docs[0].get('username') as String?;
         } else {
-          return null; // Belge bulunamadı
+          return null;
         }
       } else {
-        return null; // Kullanıcı giriş yapmamışsa
+        return null;
       }
     } catch (e) {
       print("Kullanıcı adını çekerken hata oluştu: $e");

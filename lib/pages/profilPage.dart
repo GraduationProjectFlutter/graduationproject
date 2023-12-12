@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:bitirme0/pages/CookifyAI.dart';
 import 'package:bitirme0/pages/addRecipe.dart';
 import 'package:bitirme0/pages/favoritesPage.dart';
+import 'package:bitirme0/pages/home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -103,6 +104,10 @@ class _ProfilePageState extends State<ProfilePage> {
               label: 'Favorites',
             ),
             BottomNavigationBarItem(
+              icon: Icon(Icons.computer),
+              label: 'CookifyAI',
+            ),
+            BottomNavigationBarItem(
               icon: Icon(Icons.add),
               label: 'Add Recipe',
             ),
@@ -110,16 +115,18 @@ class _ProfilePageState extends State<ProfilePage> {
               icon: Icon(Icons.person),
               label: 'Profile',
             ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.logout),
-              label: 'Logout',
-            ),
           ],
           onTap: (index) {
             setState(() {
               selectedIndex = index;
             });
             switch (index) {
+              case 0:
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomePage()),
+                );
+                break;
               case 1:
                 Navigator.push(
                   context,

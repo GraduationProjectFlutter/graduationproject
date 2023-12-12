@@ -1,5 +1,9 @@
 import 'dart:io';
 import 'package:bitirme0/css.dart';
+import 'package:bitirme0/pages/CookifyAI.dart';
+import 'package:bitirme0/pages/favoritesPage.dart';
+import 'package:bitirme0/pages/home.dart';
+import 'package:bitirme0/pages/profilPage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -67,16 +71,16 @@ class _AddRecipe extends State<AddRecipe> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        items: [
-          buildBottonNavigationBarItem(
-              context, Icons.home, 'Home', '/homePage', 0),
-          buildBottonNavigationBarItem(
-              context, Icons.favorite, 'Favorites', '/favoritesPage', 1),
-          buildBottonNavigationBarItem(
-              context, Icons.add, 'Add Recipe', '/createrecipePage', 2),
-          buildBottonNavigationBarItem(
-              context, Icons.person, 'Profile', '/profilePage', 3),
-          logoutItem(context, Icons.logout, 'Logout', '/loginPage', 4),
+        currentIndex: selectedIndex,
+        onTap: onItemTapped,
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.favorite), label: 'Favorites'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.computer), label: 'CookifyAI'),
+          BottomNavigationBarItem(icon: Icon(Icons.add), label: 'Add Recipe'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ],
       ),
       body: Container(
@@ -465,31 +469,6 @@ class _AddRecipe extends State<AddRecipe> {
     );
   }
 
-  BottomNavigationBarItem buildBottonNavigationBarItem(BuildContext context,
-      IconData icon, String label, String direction, int index) {
-    return BottomNavigationBarItem(
-      icon: SizedBox(
-        height: 42,
-        width: 24,
-        child: InkWell(
-          onTap: () {
-            if (selectedIndex != index) {
-              setState(() {
-                selectedIndex = index;
-              });
-              Navigator.pushReplacementNamed(context, direction);
-            }
-          },
-          child: Icon(
-            icon,
-            color: selectedIndex == index ? Colors.green : Colors.grey,
-          ),
-        ),
-      ),
-      label: label,
-    );
-  }
-
   Padding appLogo() {
     return Padding(
       padding: const EdgeInsets.only(top: 10),
@@ -502,6 +481,44 @@ class _AddRecipe extends State<AddRecipe> {
         )),
       ),
     );
+  }
+
+  void onItemTapped(int index) {
+    setState(() {
+      selectedIndex = index;
+    });
+    switch (index) {
+      case 0:
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => HomePage()),
+        );
+        break;
+      case 1:
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => FavoritesPage()),
+        );
+        break;
+      case 2:
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => CookifyAI()),
+        );
+        break;
+      case 3:
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => AddRecipe()),
+        );
+        break;
+      case 4:
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ProfilePage()),
+        );
+        break;
+    }
   }
 
   Future<void> whenStartPrefs() async {
