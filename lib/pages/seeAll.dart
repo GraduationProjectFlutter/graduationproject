@@ -77,15 +77,18 @@ class _SeeAllState extends State<seeAll> {
                       recipeData['category'] ?? 'No description provided.',
                   calories:
                       recipeData['calories'] ?? 'No description provided.',
+                  isFavorite: recipeData['isFavorite'] ?? false,
                 ),
               ));
             },
             child: RecipeCard(
               title: recipeData['name'] ?? 'Unnamed Recipe',
-              rating: recipeData['rateAverage'] ?? 'N/A',
+              rating: recipeData['rating']?.toString() ?? 'N/A',
               cookTime: recipeData['duration'] ?? 'Unknown',
               thumbnailUrl:
                   recipeData['url'] ?? 'assets/default_recipe_image.png',
+              recipeID: recipeData['recipeID'],
+              isFavorite: recipeData['isFavorite'] ?? false, // Eklenecek kısım
             ),
           );
         },

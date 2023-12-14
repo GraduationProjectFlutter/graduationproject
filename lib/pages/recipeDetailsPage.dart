@@ -18,6 +18,7 @@ class RecipeDetailsPage extends StatelessWidget {
   final String category;
   final String materials;
   final String calories;
+  final bool isFavorite;
 
   RecipeDetailsPage({
     required this.title,
@@ -31,6 +32,7 @@ class RecipeDetailsPage extends StatelessWidget {
     required this.materials,
     required this.category,
     required this.calories,
+    required this.isFavorite,
   });
 
   @override

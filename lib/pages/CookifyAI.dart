@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:bitirme0/pages/recipe_card.dart';
 import 'package:bitirme0/pages/recipeDetailsPage.dart'; // RecipeDetailsPage'i import et
@@ -59,6 +58,7 @@ class CookifyAI extends StatelessWidget {
                           recipeData['category'] ?? 'No description provided.',
                       calories:
                           recipeData['calories'] ?? 'No description provided.',
+                      isFavorite: recipeData['isFavorite'] ?? false,
                     ),
                   ));
                 },
@@ -68,6 +68,9 @@ class CookifyAI extends StatelessWidget {
                   cookTime: recipeData['duration'] ?? 'Unknown',
                   thumbnailUrl:
                       recipeData['url'] ?? 'assets/default_recipe_image.png',
+                  recipeID: recipeData['recipeID'],
+                  isFavorite:
+                      recipeData['isFavorite'] ?? false, // Eklenecek kısım
                 ),
               );
             },
