@@ -182,7 +182,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 prefixIcon: Icon(Icons.email),
                 border: OutlineInputBorder(),
               ),
-              readOnly: true, // E-posta adresi güncellenemez.
+              readOnly: true,
             ),
             SizedBox(height: 24),
             ElevatedButton.icon(
