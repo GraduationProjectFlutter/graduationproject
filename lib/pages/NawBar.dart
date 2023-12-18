@@ -2,7 +2,9 @@ import 'package:bitirme0/pages/CookifyAI.dart';
 import 'package:bitirme0/pages/addRecipe.dart';
 import 'package:bitirme0/pages/home.dart';
 import 'package:bitirme0/pages/profilPage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class NavBar extends StatelessWidget {
   const NavBar({Key? key});
@@ -74,6 +76,27 @@ class NavBar extends StatelessWidget {
                 context,
                 MaterialPageRoute(builder: (context) => ProfilePage()),
               );
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.logout),
+            title: Text('Oturum Kapat'),
+            onTap: () async {
+              await FirebaseAuth.instance.signOut();
+              Navigator.pop(context);
+              Navigator.of(context).pushReplacementNamed('/loginPage');
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.exit_to_app),
+            title: Text('Çıkış Yap'),
+            onTap: () {
+              Navigator.pop(context);
+              if (Navigator.canPop(context)) {
+                Navigator.pop(context);
+              } else {
+                SystemNavigator.pop();
+              }
             },
           ),
         ],
