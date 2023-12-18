@@ -1,3 +1,4 @@
+import 'package:bitirme0/pages/favoritesPage.dart';
 import 'package:bitirme0/pages/forgotpassword.dart';
 import 'package:bitirme0/pages/home.dart';
 import 'package:bitirme0/pages/login.dart';
@@ -26,7 +27,8 @@ class MyApp extends StatelessWidget {
         "/loginPage": (context) => const LoginPage(),
         "/RegistrationPage": (context) => const RegistrationPage(),
         "/ForgetPassword": (context) => const ForgotPasswordPage(),
-        "/HomePage": (context) => const HomePage()
+        "/HomePage": (context) => const HomePage(),
+        "/favorites": (context) => FavoritesPage()
       },
       home: const LoginPage(),
       debugShowCheckedModeBanner: false,

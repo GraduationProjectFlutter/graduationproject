@@ -74,6 +74,30 @@ class Auth {
     }
   }
 
+  Future<String?> getUserName() async {
+    try {
+      User? user = FirebaseAuth.instance.currentUser;
+
+      if (user != null) {
+        QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+            .collection('users')
+            .where('email', isEqualTo: user.email)
+            .get();
+
+        if (querySnapshot.docs.isNotEmpty) {
+          return querySnapshot.docs[0].get('username') as String?;
+        } else {
+          return null;
+        }
+      } else {
+        return null;
+      }
+    } catch (e) {
+      print("Kullanıcı adını çekerken hata oluştu: $e");
+      return null;
+    }
+  }
+
   Future<String> createRecipe(
       String? addedBy,
       String creatorID,

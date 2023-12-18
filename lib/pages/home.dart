@@ -2,9 +2,11 @@ import 'package:bitirme0/pages/CookifyAI.dart';
 import 'package:bitirme0/pages/NawBar.dart';
 import 'package:bitirme0/pages/addRecipe.dart';
 import 'package:bitirme0/pages/favoritesPage.dart';
+import 'package:bitirme0/pages/popularRecipes.dart';
 import 'package:bitirme0/pages/profilPage.dart';
 import 'package:bitirme0/pages/recipe_card.dart';
 import 'package:bitirme0/pages/seeAll.dart';
+import 'package:bitirme0/services/auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -18,30 +20,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List<Container> cards = [];
-
-  Future<String?> getUserName() async {
-    try {
-      User? user = FirebaseAuth.instance.currentUser;
-
-      if (user != null) {
-        QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-            .collection('users')
-            .where('email', isEqualTo: user.email)
-            .get();
-
-        if (querySnapshot.docs.isNotEmpty) {
-          return querySnapshot.docs[0].get('username') as String?;
-        } else {
-          return null;
-        }
-      } else {
-        return null;
-      }
-    } catch (e) {
-      print("Kullanıcı adını çekerken hata oluştu: $e");
-      return null;
-    }
-  }
+  final getuserName = Auth().getUserName();
 
   final db = FirebaseFirestore.instance;
   late TabController _tabController;
@@ -119,7 +98,7 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       body: FutureBuilder(
-        future: getUserName(),
+        future: getuserName,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return CircularProgressIndicator();
@@ -174,6 +153,9 @@ class _HomePageState extends State<HomePage> {
                 ),
                 Expanded(
                   child: seeAll(),
+                ),
+                Expanded(
+                  child: popularRecipes(),
                 ),
               ],
             );

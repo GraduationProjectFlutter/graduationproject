@@ -3,12 +3,12 @@ import 'package:bitirme0/pages/recipe_card.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class seeAll extends StatefulWidget {
+class popularRecipes extends StatefulWidget {
   @override
-  _SeeAllState createState() => _SeeAllState();
+  _popularRecipes createState() => _popularRecipes();
 }
 
-class _SeeAllState extends State<seeAll> {
+class _popularRecipes extends State<popularRecipes> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   late List<Map<String, dynamic>> _recipes;
 
@@ -21,8 +21,11 @@ class _SeeAllState extends State<seeAll> {
 
   Future<void> _loadRecipes() async {
     try {
-      QuerySnapshot querySnapshot =
-          await _firestore.collection('recipes').get();
+      QuerySnapshot querySnapshot = await _firestore
+          .collection('recipes')
+          .orderBy('rateAverage', descending: true)
+          .limit(3)
+          .get();
 
       if (querySnapshot.docs.isNotEmpty) {
         setState(() {
@@ -30,8 +33,6 @@ class _SeeAllState extends State<seeAll> {
               .map((DocumentSnapshot document) =>
                   document.data() as Map<String, dynamic>)
               .toList();
-          _recipes.shuffle();
-          _recipes = _recipes.take(3).toList();
         });
       }
     } catch (e) {
@@ -44,7 +45,7 @@ class _SeeAllState extends State<seeAll> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Recommended Recipes',
+          'Popular Recipes',
           style: TextStyle(
             fontWeight: FontWeight.bold,
           ),
@@ -83,7 +84,7 @@ class _SeeAllState extends State<seeAll> {
             },
             child: RecipeCard(
               title: recipeData['name'] ?? 'Unnamed Recipe',
-              rating: recipeData['rateAverage']?.toString() ?? 'N/A',
+              rating: recipeData['rateAverage'] ?? 'N/A',
               cookTime: recipeData['duration'] ?? 'Unknown',
               thumbnailUrl:
                   recipeData['url'] ?? 'assets/default_recipe_image.png',

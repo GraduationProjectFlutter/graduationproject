@@ -156,155 +156,29 @@ class _AddRecipe extends State<AddRecipe> {
                 padding: const EdgeInsets.only(
                     top: 20.0, left: 30.0, right: 30.0, bottom: 10.0),
                 child: Center(
-                  child: TextFormField(
-                    maxLength: 20,
-                    onSaved: (newValue) {
-                      name = newValue!;
-                    },
-                    validator: (value) {
-                      if (value!.isEmpty) return "Fill the blank";
-                    },
-                    keyboardType: TextInputType.text,
-                    decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.symmetric(
-                          vertical: 15.0, horizontal: 50.0),
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide(color: kBlue),
-                        borderRadius:
-                            BorderRadius.circular(25.0), // Oval şekil için
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: kBlue, width: 2),
-                        borderRadius:
-                            BorderRadius.circular(25.0), // Oval şekil için
-                      ),
-                      hintText: 'Enter your Recipe name',
-                      labelText: 'Recipe Name',
-                      prefixIcon: Icon(Icons.person, color: kBlue),
-                    ),
-                  ),
+                  child: recipeName(),
                 ),
               ),
               Container(
                 padding: const EdgeInsets.only(
                     top: 10.0, left: 25.0, right: 25.0, bottom: 10.0),
                 child: Center(
-                  child: TextFormField(
-                    maxLength: 6,
-                    onSaved: (newValue) {
-                      duration = newValue!;
-                    },
-                    validator: (value) {
-                      if (value!.isEmpty) return "Fill the blank";
-                    },
-                    keyboardType: TextInputType.number,
-                    inputFormatters: <TextInputFormatter>[
-                      FilteringTextInputFormatter.digitsOnly
-                    ],
-                    decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.symmetric(
-                          vertical: 15.0, horizontal: 50.0),
-                      border: OutlineInputBorder(
-                        borderSide: const BorderSide(color: kBlue),
-                        borderRadius: BorderRadius.circular(25.0),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: kBlue, width: 2),
-                        borderRadius: BorderRadius.circular(25.0),
-                      ),
-                      hintText: 'Enter the minute',
-                      labelText: 'Duration',
-                      prefixIcon: const Icon(Icons.access_time, color: kBlue),
-                    ),
-                  ),
+                  child: durationRecipe(),
                 ),
               ),
               Container(
                   padding: const EdgeInsets.only(
                       top: 10.0, left: 25.0, right: 25.0, bottom: 10.0),
-                  child: Center(
-                      child: TextFormField(
-                          maxLength: 200,
-                          onSaved: (newValue) {
-                            materials = newValue!;
-                          },
-                          validator: (value) {
-                            if (value!.isEmpty) return "Fill the blank";
-                          },
-                          keyboardType: TextInputType.text,
-                          decoration: InputDecoration(
-                            contentPadding: const EdgeInsets.symmetric(
-                                vertical: 15.0, horizontal: 50.0),
-                            border: OutlineInputBorder(
-                              borderSide: const BorderSide(color: kBlue),
-                              borderRadius: BorderRadius.circular(25.0),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide:
-                                  const BorderSide(color: kBlue, width: 2),
-                              borderRadius: BorderRadius.circular(25.0),
-                            ),
-                            hintText: 'Enter the materials:item1,item2,item3..',
-                            labelText: 'Materials',
-                            prefixIcon:
-                                const Icon(Icons.receipt_rounded, color: kBlue),
-                          )))),
+                  child: Center(child: materialsRecipe())),
               Container(
                   padding: const EdgeInsets.only(
                       top: 10.0, left: 25.0, right: 25.0, bottom: 10.0),
-                  child: TextFormField(
-                      maxLength: 200,
-                      onSaved: (newValue) {
-                        description = newValue!;
-                      },
-                      validator: (value) {
-                        if (value!.isEmpty) return "Fill the blank";
-                      },
-                      keyboardType: TextInputType.text,
-                      decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.symmetric(
-                            vertical: 15.0, horizontal: 50.0),
-                        border: OutlineInputBorder(
-                          borderSide: const BorderSide(color: kBlue),
-                          borderRadius: BorderRadius.circular(25.0),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(color: kBlue, width: 2),
-                          borderRadius: BorderRadius.circular(25.0),
-                        ),
-                        hintText: 'Enter the description',
-                        labelText: 'Descriptionn',
-                        prefixIcon: const Icon(Icons.book, color: kBlue),
-                      ))),
+                  child: descriptionRecipe()),
               Container(
                 padding: const EdgeInsets.only(
                     top: 15.0, left: 30.0, right: 30.0, bottom: 10.0),
                 child: Center(
-                  child: TextFormField(
-                    maxLength: 5,
-                    onSaved: (newValue) {
-                      cal = newValue!;
-                    },
-                    validator: (value) {
-                      if (value!.isEmpty) return "Fill the blank";
-                    },
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.symmetric(
-                          vertical: 15.0, horizontal: 50.0),
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide(color: kBlue),
-                        borderRadius: BorderRadius.circular(25.0),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: kBlue, width: 2),
-                        borderRadius: BorderRadius.circular(25.0),
-                      ),
-                      hintText: 'Enter your Calories',
-                      labelText: 'Calories',
-                      prefixIcon: Icon(Icons.whatshot, color: kBlue),
-                    ),
-                  ),
+                  child: caloriesRecipe(),
                 ),
               ),
               Padding(
@@ -465,6 +339,147 @@ class _AddRecipe extends State<AddRecipe> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  TextFormField caloriesRecipe() {
+    return TextFormField(
+      maxLength: 5,
+      onSaved: (newValue) {
+        cal = newValue!;
+      },
+      validator: (value) {
+        if (value!.isEmpty) return "Fill the blank";
+      },
+      keyboardType: TextInputType.number,
+      decoration: InputDecoration(
+        contentPadding:
+            const EdgeInsets.symmetric(vertical: 15.0, horizontal: 50.0),
+        border: OutlineInputBorder(
+          borderSide: BorderSide(color: kBlue),
+          borderRadius: BorderRadius.circular(25.0),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: kBlue, width: 2),
+          borderRadius: BorderRadius.circular(25.0),
+        ),
+        hintText: 'Enter your Calories',
+        labelText: 'Calories',
+        prefixIcon: Icon(Icons.whatshot, color: kBlue),
+      ),
+    );
+  }
+
+  TextFormField descriptionRecipe() {
+    return TextFormField(
+        maxLength: 200,
+        onSaved: (newValue) {
+          description = newValue!;
+        },
+        validator: (value) {
+          if (value!.isEmpty) return "Fill the blank";
+        },
+        keyboardType: TextInputType.text,
+        decoration: InputDecoration(
+          contentPadding:
+              const EdgeInsets.symmetric(vertical: 15.0, horizontal: 50.0),
+          border: OutlineInputBorder(
+            borderSide: const BorderSide(color: kBlue),
+            borderRadius: BorderRadius.circular(25.0),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: const BorderSide(color: kBlue, width: 2),
+            borderRadius: BorderRadius.circular(25.0),
+          ),
+          hintText: 'Enter the description',
+          labelText: 'Descriptionn',
+          prefixIcon: const Icon(Icons.book, color: kBlue),
+        ));
+  }
+
+  TextFormField materialsRecipe() {
+    return TextFormField(
+        maxLength: 200,
+        onSaved: (newValue) {
+          materials = newValue!;
+        },
+        validator: (value) {
+          if (value!.isEmpty) return "Fill the blank";
+        },
+        keyboardType: TextInputType.text,
+        decoration: InputDecoration(
+          contentPadding:
+              const EdgeInsets.symmetric(vertical: 15.0, horizontal: 50.0),
+          border: OutlineInputBorder(
+            borderSide: const BorderSide(color: kBlue),
+            borderRadius: BorderRadius.circular(25.0),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: const BorderSide(color: kBlue, width: 2),
+            borderRadius: BorderRadius.circular(25.0),
+          ),
+          hintText: 'Enter the materials:item1,item2,item3..',
+          labelText: 'Materials',
+          prefixIcon: const Icon(Icons.receipt_rounded, color: kBlue),
+        ));
+  }
+
+  TextFormField durationRecipe() {
+    return TextFormField(
+      maxLength: 6,
+      onSaved: (newValue) {
+        duration = newValue!;
+      },
+      validator: (value) {
+        if (value!.isEmpty) return "Fill the blank";
+      },
+      keyboardType: TextInputType.number,
+      inputFormatters: <TextInputFormatter>[
+        FilteringTextInputFormatter.digitsOnly
+      ],
+      decoration: InputDecoration(
+        contentPadding:
+            const EdgeInsets.symmetric(vertical: 15.0, horizontal: 50.0),
+        border: OutlineInputBorder(
+          borderSide: const BorderSide(color: kBlue),
+          borderRadius: BorderRadius.circular(25.0),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: const BorderSide(color: kBlue, width: 2),
+          borderRadius: BorderRadius.circular(25.0),
+        ),
+        hintText: 'Enter the minute',
+        labelText: 'Duration',
+        prefixIcon: const Icon(Icons.access_time, color: kBlue),
+      ),
+    );
+  }
+
+  TextFormField recipeName() {
+    return TextFormField(
+      maxLength: 20,
+      onSaved: (newValue) {
+        name = newValue!;
+      },
+      validator: (value) {
+        if (value!.isEmpty) return "Fill the blank";
+      },
+      keyboardType: TextInputType.text,
+      decoration: InputDecoration(
+        contentPadding:
+            const EdgeInsets.symmetric(vertical: 15.0, horizontal: 50.0),
+        border: OutlineInputBorder(
+          borderSide: BorderSide(color: kBlue),
+          borderRadius: BorderRadius.circular(25.0), // Oval şekil için
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: kBlue, width: 2),
+          borderRadius: BorderRadius.circular(25.0), // Oval şekil için
+        ),
+        hintText: 'Enter your Recipe name',
+        labelText: 'Recipe Name',
+        prefixIcon: Icon(Icons.person, color: kBlue),
       ),
     );
   }

@@ -209,7 +209,7 @@ class _RegistrationPage extends State<RegistrationPage> {
           return "Fill the blank";
         }
       },
-      onSaved: (newValue) {
+      onSaved: (newValue) {   
         username = newValue!;
       },
       controller: name_controller,
