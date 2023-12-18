@@ -1,3 +1,4 @@
+import 'package:bitirme0/css.dart';
 import 'package:bitirme0/pages/CookifyAI.dart';
 import 'package:bitirme0/pages/NawBar.dart';
 import 'package:bitirme0/pages/addRecipe.dart';
@@ -6,6 +7,7 @@ import 'package:bitirme0/pages/popularRecipes.dart';
 import 'package:bitirme0/pages/profilPage.dart';
 import 'package:bitirme0/pages/recipe_card.dart';
 import 'package:bitirme0/pages/seeAll.dart';
+import 'package:bitirme0/pages/algolia.dart';
 import 'package:bitirme0/services/auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -76,12 +78,7 @@ class _HomePageState extends State<HomePage> {
         child: NavBar(),
       ),
       appBar: AppBar(
-        actions: [
-          IconButton(
-            icon: Icon(Icons.search),
-            onPressed: () {},
-          ),
-        ],
+        backgroundColor: defColor,
       ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
@@ -108,6 +105,7 @@ class _HomePageState extends State<HomePage> {
             String? username = snapshot.data as String?;
             return Column(
               children: [
+                SizedBox(height: 8),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -146,11 +144,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ],
                 ),
-                SearchBar(
-                  backgroundColor: MaterialStateProperty.all(Colors.white),
-                  leading: const Icon(Icons.search),
-                  // other arguments
-                ),
+                _buildRecipeCard2(),
                 Expanded(
                   child: seeAll(),
                 ),
@@ -161,6 +155,43 @@ class _HomePageState extends State<HomePage> {
             );
           }
         },
+      ),
+    );
+  }
+
+  Widget _buildRecipeCard2() {
+    return GestureDetector(
+      onTap: () {
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => AlgoliaPage(),
+        ));
+      },
+      child: Container(
+        margin: EdgeInsets.all(5),
+        padding: EdgeInsets.symmetric(vertical: 20, horizontal: 70),
+        decoration: BoxDecoration(
+          color: const Color.fromARGB(255, 105, 111, 116),
+          borderRadius: BorderRadius.circular(15),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 3,
+              blurRadius: 15,
+              offset: Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(Icons.search, color: Colors.white),
+            SizedBox(width: 10),
+            Text(
+              'Search for recipes',
+              style: TextStyle(color: Colors.white, fontSize: 18),
+            ),
+          ],
+        ),
       ),
     );
   }
