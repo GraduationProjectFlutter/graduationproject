@@ -76,7 +76,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
                   },
                   child: RecipeCard(
                     title: recipe['name'],
-                    rating: recipe['rating'].toString(),
+                    rating: recipe['rateAverage'].toString(),
                     cookTime: recipe['duration'],
                     thumbnailUrl: recipe['url'],
                     recipeID: recipe['recipeID'],

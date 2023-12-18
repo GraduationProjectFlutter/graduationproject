@@ -64,7 +64,7 @@ class CookifyAI extends StatelessWidget {
                 },
                 child: RecipeCard(
                   title: recipeData['name'] ?? 'Unnamed Recipe',
-                  rating: recipeData['rating']?.toString() ?? 'N/A',
+                  rating: recipeData['rateAverage']?.toString() ?? 'N/A',
                   cookTime: recipeData['duration'] ?? 'Unknown',
                   thumbnailUrl:
                       recipeData['url'] ?? 'assets/default_recipe_image.png',
