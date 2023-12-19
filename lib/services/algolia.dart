@@ -1,20 +1,20 @@
 import 'package:algolia/algolia.dart';
 
+class Application {
+  static final Algolia algolia = Algolia.init(
+    applicationId: 'V34BNVX4EG',
+    apiKey: '5d4afae0fc4c38386e5364ab0149a84f',
+  );
+}
+
 class AlgoliaService {
-  static const String _applicationId = 'YourActualAlgoliaApplicationId';
-  static const String _apiKey = 'YourActualAlgoliaApiKey';
-  static const String _indexName = 'YourIndexName';
+  final Algolia _algoliaApp = Application.algolia;
 
-  late final Algolia _algolia;
-  late final AlgoliaIndexReference _index;
+  AlgoliaService();
 
-  AlgoliaService() {
-    _algolia = Algolia.init(applicationId: _applicationId, apiKey: _apiKey);
-    _index = _algolia.index(_indexName);
-  }
-
-  Future<List<AlgoliaObjectSnapshot>> search(String searchText) async {
-    AlgoliaQuery query = _index.search(searchText);
+  Future<List<AlgoliaObjectSnapshot>> searchRecipes(String queryText) async {
+    AlgoliaQuery query =
+        _algoliaApp.instance.index('recipes_index').search(queryText);
     AlgoliaQuerySnapshot querySnapshot = await query.getObjects();
     return querySnapshot.hits;
   }
