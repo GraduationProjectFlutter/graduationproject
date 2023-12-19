@@ -1,9 +1,9 @@
 import 'package:bitirme0/css.dart';
-import 'package:bitirme0/pages/login.dart';
 import 'package:bitirme0/services/auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:bitirme0/pages/login.dart';
 
 class RegistrationPage extends StatefulWidget {
   const RegistrationPage({super.key});
@@ -209,7 +209,7 @@ class _RegistrationPage extends State<RegistrationPage> {
           return "Fill the blank";
         }
       },
-      onSaved: (newValue) {   
+      onSaved: (newValue) {
         username = newValue!;
       },
       controller: name_controller,
