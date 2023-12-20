@@ -95,7 +95,7 @@ class _AlgoliaSearchPageState extends State<AlgoliaSearchPage> {
                               title: data['name'] ?? 'Unnamed Recipe',
                               cookTime: data['duration'] ?? 'Unknown',
                               thumbnailUrl:
-                                  data['imageUrl'] ?? 'assets/images/pizza.png',
+                                  data['url'] ?? 'assets/images/pizza.png',
                               description: data['description'] ??
                                   'No description provided.',
                               difficulty: data['difficulty'] ?? 'Unknown',
@@ -113,8 +113,8 @@ class _AlgoliaSearchPageState extends State<AlgoliaSearchPage> {
                           title: data['name'] ?? 'Unnamed Recipe',
                           rating: data['rateAverage']?.toString() ?? 'N/A',
                           cookTime: data['duration'] ?? 'Unknown',
-                          thumbnailUrl: data['imageUrl'] ??
-                              'assets/default_recipe_image.png',
+                          thumbnailUrl:
+                              data['url'] ?? 'assets/default_recipe_image.png',
                           recipeID: _searchResults[index].objectID,
                           isFavorite: data['isFavorite'] ?? false,
                         ),
