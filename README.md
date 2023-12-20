@@ -1,4 +1,4 @@
-# bitirme0
+# Graduation Project
 
 A new Flutter project.
 
