@@ -7,8 +7,8 @@ import 'package:bitirme0/pages/popularRecipes.dart';
 import 'package:bitirme0/pages/profilPage.dart';
 import 'package:bitirme0/pages/recipe_card.dart';
 import 'package:bitirme0/pages/seeAll.dart';
-import 'package:bitirme0/pages/algolia.dart';
 import 'package:bitirme0/services/auth.dart';
+import 'package:bitirme0/pages/algoliaSearch.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -163,7 +163,7 @@ class _HomePageState extends State<HomePage> {
     return GestureDetector(
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => AlgoliaPage(),
+          builder: (context) => AlgoliaSearchPage(),
         ));
       },
       child: Container(
