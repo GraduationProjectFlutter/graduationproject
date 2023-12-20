@@ -78,7 +78,7 @@ class _HomePageState extends State<HomePage> {
         child: NavBar(),
       ),
       appBar: AppBar(
-        backgroundColor: defColor,
+        backgroundColor: Colors.white,
       ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
