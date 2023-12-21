@@ -3,6 +3,7 @@ import 'package:bitirme0/pages/CookifyAI.dart';
 import 'package:bitirme0/pages/addRecipe.dart';
 import 'package:bitirme0/pages/favoritesPage.dart';
 import 'package:bitirme0/pages/home.dart';
+import 'package:bitirme0/services/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -25,8 +26,10 @@ class _ProfilePageState extends State<ProfilePage> {
   final TextEditingController _newPasswordController = TextEditingController();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final ImagePicker _picker = ImagePicker();
+  final getuserName = Auth().getUserName();
   File? _imageFile;
   int selectedIndex = 3;
+  String? username = null;
 
   @override
   void initState() {
@@ -42,14 +45,14 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   void _updateUserName() async {
-    String newName = _usernameController.text.trim();
-    if (newName.isNotEmpty) {
+    String? name = user!.displayName;
+    if (name != null) {
       try {
-        await user!.updateProfile(displayName: newName);
+        await user!.updateProfile(displayName: name);
         await _firestore
             .collection('users')
             .doc(user!.uid)
-            .update({'displayName': newName});
+            .update({'displayName': name});
         await user!.reload();
         user = FirebaseAuth.instance.currentUser;
         setState(() {});
@@ -166,14 +169,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   : AssetImage('assets/default_profile.png') as ImageProvider,
             ),
             SizedBox(height: 24),
-            TextField(
-              controller: _usernameController,
-              decoration: InputDecoration(
-                labelText: 'Username',
-                prefixIcon: Icon(Icons.person),
-                border: OutlineInputBorder(),
-              ),
-            ),
+            namecall(),
             SizedBox(height: 16),
             TextField(
               controller: _emailController,
@@ -202,6 +198,32 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
       ),
     );
+  }
+
+  FutureBuilder<String?> namecall() {
+    return FutureBuilder(
+        future: getuserName,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Text("Hata: ${snapshot.error}");
+          } else {
+            username = snapshot.data as String?;
+            return Column(
+              children: [
+                TextField(
+                  controller: _usernameController,
+                  decoration: InputDecoration(
+                    labelText: username,
+                    prefixIcon: Icon(Icons.person),
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+              ],
+            );
+          }
+        });
   }
 
   void _showChangePasswordDialog() {

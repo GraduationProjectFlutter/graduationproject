@@ -77,9 +77,7 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Colors.black,
         child: NavBar(),
       ),
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-      ),
+      appBar: AppBar(),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         currentIndex: selectedIndex,
@@ -98,7 +96,7 @@ class _HomePageState extends State<HomePage> {
         future: getuserName,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return CircularProgressIndicator();
+            return Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Text("Hata: ${snapshot.error}");
           } else {

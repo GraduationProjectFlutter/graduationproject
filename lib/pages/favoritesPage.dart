@@ -30,7 +30,6 @@ class _FavoritesPageState extends State<FavoritesPage> {
 
     var favoriteRecipeIds = querySnapshot.docs.map((doc) => doc.id).toList();
 
-    // Tüm favori tariflerin detaylarını çek
     var allFavorites = await _firestore
         .collection('recipes')
         .where(FieldPath.documentId, whereIn: favoriteRecipeIds)
