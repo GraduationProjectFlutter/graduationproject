@@ -294,6 +294,10 @@ class _ProfilePageState extends State<ProfilePage> {
     var docID = querySnapshot.docs.first.id;
 
     String newDisplayName = _usernameController.text.trim();
+    setState(() {
+      user!.updateDisplayName(newDisplayName);
+    });
+
     if (newDisplayName.isNotEmpty) {
       try {
         await FirebaseFirestore.instance

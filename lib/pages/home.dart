@@ -70,7 +70,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       drawer: const Drawer(
         shadowColor: Colors.black,
@@ -111,22 +111,25 @@ class _HomePageState extends State<HomePage> {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(right: 40.0),
+                          padding: EdgeInsets.only(right: screenWidth * 0.04),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Text(
-                                "Hey $username",
-                                style: TextStyle(fontSize: 18),
+                              Align(
+                                alignment: Alignment
+                                    .centerLeft, // İhtiyacınıza göre alignment'ı ayarlayabilirsiniz
+                                child: Text(
+                                  "Hey $username",
+                                  style: TextStyle(fontSize: 18),
+                                ),
                               ),
-                              SizedBox(width: 10),
                               Icon(Icons.waving_hand_outlined, size: 30),
                             ],
                           ),
                         ),
                         SizedBox(height: 3),
-                        const Padding(
-                          padding: EdgeInsets.only(left: 20.0),
+                        Padding(
+                          padding: EdgeInsets.only(left: screenWidth * 0.05),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
