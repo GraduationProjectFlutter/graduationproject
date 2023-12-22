@@ -1,5 +1,6 @@
 import 'package:bitirme0/pages/CookifyAI.dart';
 import 'package:bitirme0/pages/addRecipe.dart';
+import 'package:bitirme0/pages/algoliaSearch.dart';
 import 'package:bitirme0/pages/caloriesPage.dart';
 import 'package:bitirme0/pages/home.dart';
 import 'package:bitirme0/pages/profilPage.dart';
@@ -64,7 +65,7 @@ class NavBar extends StatelessWidget {
               Navigator.pop(context);
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => CookifyAI()),
+                MaterialPageRoute(builder: (context) => AlgoliaSearchPage()),
               );
             },
           ),

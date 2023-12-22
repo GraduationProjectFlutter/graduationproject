@@ -25,6 +25,7 @@ class _ProfilePageState extends State<ProfilePage> {
       TextEditingController();
   final TextEditingController _newPasswordController = TextEditingController();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
   final ImagePicker _picker = ImagePicker();
   final getuserName = Auth().getUserName();
   File? _imageFile;
@@ -285,16 +286,20 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   void _updateUsername() async {
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .where('email', isEqualTo: _emailController.text)
+        .limit(1)
+        .get();
+    var docID = querySnapshot.docs.first.id;
+
     String newDisplayName = _usernameController.text.trim();
     if (newDisplayName.isNotEmpty) {
       try {
-        // Update the display name locally
-        setState(() {
-          user!.updateDisplayName(newDisplayName);
-        });
-
-        // Update the display name in Firebase Authentication
-        await user!.updateProfile(displayName: newDisplayName);
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(docID)
+            .update({'username': newDisplayName});
 
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Display name updated successfully.')),
