@@ -1,4 +1,3 @@
-import 'package:bitirme0/pages/CookifyAI.dart';
 import 'package:bitirme0/pages/addRecipe.dart';
 import 'package:bitirme0/pages/algoliaSearch.dart';
 import 'package:bitirme0/pages/caloriesPage.dart';

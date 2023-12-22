@@ -89,7 +89,7 @@ class _popularRecipes extends State<popularRecipes> {
               thumbnailUrl:
                   recipeData['url'] ?? 'assets/default_recipe_image.png',
               recipeID: recipeData['recipeID'],
-              isFavorite: recipeData['isFavorite'] ?? false, // Eklenecek kısım
+              isFavorite: recipeData['isFavorite'] ?? false, 
             ),
           );
         },

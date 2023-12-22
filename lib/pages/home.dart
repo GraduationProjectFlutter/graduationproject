@@ -1,16 +1,12 @@
-import 'package:bitirme0/css.dart';
-import 'package:bitirme0/pages/CookifyAI.dart';
 import 'package:bitirme0/pages/NawBar.dart';
 import 'package:bitirme0/pages/addRecipe.dart';
 import 'package:bitirme0/pages/favoritesPage.dart';
 import 'package:bitirme0/pages/popularRecipes.dart';
 import 'package:bitirme0/pages/profilPage.dart';
-import 'package:bitirme0/pages/recipe_card.dart';
 import 'package:bitirme0/pages/seeAll.dart';
 import 'package:bitirme0/services/auth.dart';
 import 'package:bitirme0/pages/algoliaSearch.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -25,10 +21,8 @@ class _HomePageState extends State<HomePage> {
   final getuserName = Auth().getUserName();
 
   final db = FirebaseFirestore.instance;
-  late TabController _tabController;
   int selectedIndex = 0;
   TextEditingController n1 = TextEditingController();
-  int _selectedIndex = 0;
   var name = "";
 
   @override
