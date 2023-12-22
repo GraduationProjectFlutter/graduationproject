@@ -44,27 +44,6 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
-  void _updateUserName() async {
-    String? name = user!.displayName;
-    if (name != null) {
-      try {
-        await user!.updateProfile(displayName: name);
-        await _firestore
-            .collection('users')
-            .doc(user!.uid)
-            .update({'displayName': name});
-        await user!.reload();
-        user = FirebaseAuth.instance.currentUser;
-        setState(() {});
-        ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Username updated successfully.')));
-      } catch (e) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('Error updating username.')));
-      }
-    }
-  }
-
   void _changePassword() async {
     String currentPassword = _currentPasswordController.text.trim();
     String newPassword = _newPasswordController.text.trim();
@@ -182,7 +161,7 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             SizedBox(height: 24),
             ElevatedButton.icon(
-              onPressed: _updateUserName,
+              onPressed: _showEditUsernameDialog,
               icon: Icon(Icons.edit),
               label: Text('Edit Username'),
               style: ElevatedButton.styleFrom(minimumSize: Size.fromHeight(50)),
@@ -273,5 +252,58 @@ class _ProfilePageState extends State<ProfilePage> {
         );
       },
     );
+  }
+
+  void _showEditUsernameDialog() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Edit Username'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              namecall(),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                _updateUsername();
+                Navigator.of(context).pop();
+              },
+              child: Text('Save'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _updateUsername() async {
+    String newDisplayName = _usernameController.text.trim();
+    if (newDisplayName.isNotEmpty) {
+      try {
+        // Update the display name locally
+        setState(() {
+          user!.updateDisplayName(newDisplayName);
+        });
+
+        // Update the display name in Firebase Authentication
+        await user!.updateProfile(displayName: newDisplayName);
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Display name updated successfully.')),
+        );
+      } on FirebaseAuthException catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error updating display name. ${e.message}')),
+        );
+      }
+    }
   }
 }
