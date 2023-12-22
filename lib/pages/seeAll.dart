@@ -43,13 +43,13 @@ class _SeeAllState extends State<seeAll> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'Recommended Recipes',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
+          title: Text(
+            'Recommended Recipes',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
           ),
-        ),
-      ),
+          automaticallyImplyLeading: false),
       body: ListView.builder(
         itemCount: _recipes.length,
         itemBuilder: (context, index) {

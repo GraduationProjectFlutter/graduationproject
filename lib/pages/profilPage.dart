@@ -138,43 +138,50 @@ class _ProfilePageState extends State<ProfilePage> {
           },
         ),
       ),
-      body: Padding(
-        padding: EdgeInsets.all(16),
-        child: ListView(
-          children: [
-            CircleAvatar(
-              radius: 50,
-              backgroundImage: user?.photoURL != null
-                  ? NetworkImage(user!.photoURL!)
-                  : AssetImage('assets/default_profile.png') as ImageProvider,
+      body: Center(
+        child: Padding(
+          padding: EdgeInsets.all(16),
+          child: Center(
+            child: ListView(
+              children: [
+                CircleAvatar(
+                  radius: 50,
+                  backgroundImage: user?.photoURL != null
+                      ? NetworkImage(user!.photoURL!)
+                      : AssetImage('assets/default_profile.png')
+                          as ImageProvider,
+                ),
+                SizedBox(height: 24),
+                namecall(),
+                SizedBox(height: 16),
+                TextField(
+                  controller: _emailController,
+                  decoration: InputDecoration(
+                    labelText: 'Email',
+                    prefixIcon: Icon(Icons.email),
+                    border: OutlineInputBorder(),
+                  ),
+                  readOnly: true,
+                ),
+                SizedBox(height: 24),
+                ElevatedButton.icon(
+                  onPressed: _showEditUsernameDialog,
+                  icon: Icon(Icons.edit),
+                  label: Text('Edit Username'),
+                  style: ElevatedButton.styleFrom(
+                      minimumSize: Size.fromHeight(50)),
+                ),
+                SizedBox(height: 16),
+                ElevatedButton.icon(
+                  onPressed: () => _showChangePasswordDialog(),
+                  icon: Icon(Icons.lock),
+                  label: Text('Change Password'),
+                  style: ElevatedButton.styleFrom(
+                      minimumSize: Size.fromHeight(50)),
+                ),
+              ],
             ),
-            SizedBox(height: 24),
-            namecall(),
-            SizedBox(height: 16),
-            TextField(
-              controller: _emailController,
-              decoration: InputDecoration(
-                labelText: 'Email',
-                prefixIcon: Icon(Icons.email),
-                border: OutlineInputBorder(),
-              ),
-              readOnly: true,
-            ),
-            SizedBox(height: 24),
-            ElevatedButton.icon(
-              onPressed: _showEditUsernameDialog,
-              icon: Icon(Icons.edit),
-              label: Text('Edit Username'),
-              style: ElevatedButton.styleFrom(minimumSize: Size.fromHeight(50)),
-            ),
-            SizedBox(height: 16),
-            ElevatedButton.icon(
-              onPressed: () => _showChangePasswordDialog(),
-              icon: Icon(Icons.lock),
-              label: Text('Change Password'),
-              style: ElevatedButton.styleFrom(minimumSize: Size.fromHeight(50)),
-            ),
-          ],
+          ),
         ),
       ),
     );

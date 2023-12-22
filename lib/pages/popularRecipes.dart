@@ -44,13 +44,13 @@ class _popularRecipes extends State<popularRecipes> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'Popular Recipes',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
+          title: Text(
+            'Popular Recipes',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
           ),
-        ),
-      ),
+          automaticallyImplyLeading: false),
       body: ListView.builder(
         itemCount: _recipes.length,
         itemBuilder: (context, index) {
