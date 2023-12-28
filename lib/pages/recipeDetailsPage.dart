@@ -47,7 +47,7 @@ class RecipeDetailsPage extends StatelessWidget {
                 leading: IconButton(
                   icon: Icon(
                     Icons.arrow_back,
-                    color: Colors.white, // Geri dönme ikonunun rengi
+                    color: Colors.white,
                   ),
                   onPressed: () {
                     Navigator.pop(context);
@@ -129,8 +129,7 @@ class RecipeDetailsPage extends StatelessWidget {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.all(
-                              5.0), // İstenilen boşluk miktarını burada belirtin
+                          padding: const EdgeInsets.all(5.0),
                           child: Row(
                             children: [
                               Icon(

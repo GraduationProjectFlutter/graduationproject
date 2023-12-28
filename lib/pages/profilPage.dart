@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:bitirme0/pages/CookifyAI.dart';
+import 'package:bitirme0/pages/allRecipes.dart';
 import 'package:bitirme0/pages/addRecipe.dart';
 import 'package:bitirme0/pages/favoritesPage.dart';
 import 'package:bitirme0/pages/home.dart';
@@ -71,72 +71,6 @@ class _ProfilePageState extends State<ProfilePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Edit Profile'),
-      ),
-      bottomNavigationBar: Container(
-        height: 60,
-        child: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          currentIndex: selectedIndex,
-          items: [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.favorite),
-              label: 'Favorites',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.computer),
-              label: 'CookifyAI',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.add),
-              label: 'Add Recipe',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: 'Profile',
-            ),
-          ],
-          onTap: (index) {
-            setState(() {
-              selectedIndex = index;
-            });
-            switch (index) {
-              case 0:
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => HomePage()),
-                );
-                break;
-              case 1:
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => FavoritesPage()),
-                );
-                break;
-              case 2:
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => CookifyAI()),
-                );
-                break;
-              case 3:
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => AddRecipe()),
-                );
-                break;
-              case 4:
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ProfilePage()),
-                );
-                break;
-            }
-          },
-        ),
       ),
       body: Center(
         child: Padding(

@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:bitirme0/css.dart';
-import 'package:bitirme0/pages/CookifyAI.dart';
+import 'package:bitirme0/pages/allRecipes.dart';
 import 'package:bitirme0/pages/favoritesPage.dart';
 import 'package:bitirme0/pages/home.dart';
 import 'package:bitirme0/pages/profilPage.dart';
@@ -68,20 +68,6 @@ class _AddRecipe extends State<AddRecipe> {
       appBar: AppBar(
         centerTitle: true,
         title: const Text('Create Recipe'),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        currentIndex: selectedIndex,
-        onTap: onItemTapped,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.favorite), label: 'Favorites'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.computer), label: 'CookifyAI'),
-          BottomNavigationBarItem(icon: Icon(Icons.add), label: 'Add Recipe'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
-        ],
       ),
       body: Container(
         decoration: const BoxDecoration(),
@@ -471,11 +457,11 @@ class _AddRecipe extends State<AddRecipe> {
             const EdgeInsets.symmetric(vertical: 15.0, horizontal: 50.0),
         border: OutlineInputBorder(
           borderSide: BorderSide(color: kBlue),
-          borderRadius: BorderRadius.circular(25.0), // Oval şekil için
+          borderRadius: BorderRadius.circular(25.0),
         ),
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(color: kBlue, width: 2),
-          borderRadius: BorderRadius.circular(25.0), // Oval şekil için
+          borderRadius: BorderRadius.circular(25.0),
         ),
         hintText: 'Enter your Recipe name',
         labelText: 'Recipe Name',
@@ -496,44 +482,6 @@ class _AddRecipe extends State<AddRecipe> {
         )),
       ),
     );
-  }
-
-  void onItemTapped(int index) {
-    setState(() {
-      selectedIndex = index;
-    });
-    switch (index) {
-      case 0:
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => HomePage()),
-        );
-        break;
-      case 1:
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => FavoritesPage()),
-        );
-        break;
-      case 2:
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => CookifyAI()),
-        );
-        break;
-      case 3:
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => AddRecipe()),
-        );
-        break;
-      case 4:
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => ProfilePage()),
-        );
-        break;
-    }
   }
 
   Future<void> whenStartPrefs() async {

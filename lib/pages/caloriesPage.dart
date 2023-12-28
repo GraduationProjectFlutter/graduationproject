@@ -76,23 +76,6 @@ class _CaloriesPageState extends State<CaloriesPage> {
     final data = hit.data;
     double calories = double.tryParse(data['calories']?.toString() ?? '0') ?? 0;
     _addToTotalCalories(calories);
-
-    Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) => RecipeDetailsPage(
-        title: data['name'] ?? 'Unnamed Recipe',
-        cookTime: data['duration'] ?? 'Unknown',
-        thumbnailUrl: data['url'] ?? 'assets/images/default_image.png',
-        description: data['description'] ?? 'No description provided.',
-        difficulty: data['difficulty'] ?? 'Unknown',
-        creator: data['addedBy'] ?? 'Unknown',
-        creatorID: data['creatorID'] ?? 'Unknown',
-        materials: data['materials'] ?? 'Unknown',
-        recipeID: hit.objectID,
-        category: data['category'] ?? 'Unknown',
-        calories: data['calories'] ?? 'Unknown',
-        isFavorite: data['isFavorite'] ?? false,
-      ),
-    ));
   }
 
   @override

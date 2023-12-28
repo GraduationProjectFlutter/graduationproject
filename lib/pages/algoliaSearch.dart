@@ -3,7 +3,6 @@ import 'package:bitirme0/pages/recipe_card.dart';
 import 'package:flutter/material.dart';
 import 'package:algolia/algolia.dart';
 
-// Algolia ayarlarınız
 final Algolia algolia = Algolia.init(
   applicationId: 'V34BNVX4EG',
   apiKey: '5d4afae0fc4c38386e5364ab0149a84f',
@@ -62,7 +61,7 @@ class _AlgoliaSearchPageState extends State<AlgoliaSearchPage> {
         _searchResults = [];
         _searching = false;
       });
-      print(e); // Hata yönetimi için uygun bir çözüm bulunmalıdır.
+      print(e); 
     }
   }
 

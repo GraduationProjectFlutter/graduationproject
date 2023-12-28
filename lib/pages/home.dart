@@ -110,8 +110,7 @@ class _HomePageState extends State<HomePage> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Align(
-                                alignment: Alignment
-                                    .centerLeft, // İhtiyacınıza göre alignment'ı ayarlayabilirsiniz
+                                alignment: Alignment.centerLeft,
                                 child: Text(
                                   "Hey $username",
                                   style: TextStyle(fontSize: 18),
@@ -134,7 +133,7 @@ class _HomePageState extends State<HomePage> {
                             ],
                           ),
                         ),
-                        SizedBox(height: 20),
+                        SizedBox(height: 8),
                       ],
                     ),
                   ],
@@ -163,9 +162,12 @@ class _HomePageState extends State<HomePage> {
       },
       child: Container(
         margin: EdgeInsets.all(5),
-        padding: EdgeInsets.symmetric(vertical: 20, horizontal: 70),
+        padding: EdgeInsets.symmetric(vertical: 30, horizontal: 70),
         decoration: BoxDecoration(
-          color: const Color.fromARGB(255, 105, 111, 116),
+          image: DecorationImage(
+            image: AssetImage('assets/image/robot.png'),
+            fit: BoxFit.cover,
+          ),
           borderRadius: BorderRadius.circular(15),
           boxShadow: [
             BoxShadow(

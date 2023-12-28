@@ -27,9 +27,7 @@ class RecipeCard extends StatefulWidget {
 class _RecipeCardState extends State<RecipeCard> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   void _toggleFavorite() async {
-    // Check if the user is interacting with the toggle
     if (widget.isFavorite != null) {
-      // Toggle the favorite state only if it's not null
       setState(() {
         widget.isFavorite = !widget.isFavorite!;
       });
@@ -41,13 +39,10 @@ class _RecipeCardState extends State<RecipeCard> {
           .doc(widget.recipeID);
 
       if (widget.isFavorite!) {
-        // If the recipe is now a favorite, set it in Firestore
         await userFavoritesRef.set({
           'recipeID': widget.recipeID,
-          // Diğer gerekli bilgiler eklenebilir
         });
       } else {
-        // If the recipe is not a favorite, delete it from Firestore
         await userFavoritesRef.delete();
       }
     }
@@ -60,7 +55,7 @@ class _RecipeCardState extends State<RecipeCard> {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 22, vertical: 10),
       width: size.width * 0.7,
-      height: 110, // Yüksekliği görsel içeriğe göre ayarlayabilirsiniz
+      height: 110,
       decoration: BoxDecoration(
         color: Colors.black,
         borderRadius: BorderRadius.circular(15),

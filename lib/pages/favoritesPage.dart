@@ -1,3 +1,6 @@
+import 'package:bitirme0/pages/addRecipe.dart';
+import 'package:bitirme0/pages/algoliaSearch.dart';
+import 'package:bitirme0/pages/profilPage.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -13,6 +16,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   List<Map<String, dynamic>> favoriteRecipes = [];
+  int selectedIndex = 0;
 
   @override
   void initState() {

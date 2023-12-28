@@ -3,9 +3,11 @@ import 'package:bitirme0/pages/algoliaSearch.dart';
 import 'package:bitirme0/pages/caloriesPage.dart';
 import 'package:bitirme0/pages/home.dart';
 import 'package:bitirme0/pages/profilPage.dart';
+import 'package:bitirme0/pages/favoritesPage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:bitirme0/pages/allRecipes.dart';
 
 class NavBar extends StatelessWidget {
   const NavBar({Key? key});
@@ -36,6 +38,28 @@ class NavBar extends StatelessWidget {
             },
           ),
           ListTile(
+            leading: Icon(Icons.favorite),
+            title: Text('Favorites'),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => FavoritesPage()),
+              );
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.computer),
+            title: Text('CookifyAl'),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AlgoliaSearchPage()),
+              );
+            },
+          ),
+          ListTile(
             leading: Icon(Icons.add),
             title: Text('Add Recipe'),
             onTap: () {
@@ -58,13 +82,13 @@ class NavBar extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: Icon(Icons.computer),
-            title: Text('Cookify AI'),
+            leading: Icon(Icons.view_list),
+            title: Text('See All'),
             onTap: () {
               Navigator.pop(context);
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => AlgoliaSearchPage()),
+                MaterialPageRoute(builder: (context) => CookifyAI()),
               );
             },
           ),
