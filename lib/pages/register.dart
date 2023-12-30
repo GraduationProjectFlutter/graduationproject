@@ -21,6 +21,7 @@ class _RegistrationPage extends State<RegistrationPage> {
   final TextEditingController name_controller = TextEditingController();
   final TextEditingController confirmpassword_controller =
       TextEditingController();
+  final TextEditingController _diseaseController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -155,6 +156,18 @@ class _RegistrationPage extends State<RegistrationPage> {
                       borderRadius: BorderRadius.circular(16),
                     ),
                     child: confirmPassword(),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10.0),
+                  child: Container(
+                    height: size.height * 0.08,
+                    width: size.width * 0.8,
+                    decoration: BoxDecoration(
+                      color: Colors.grey[600]?.withOpacity(0.5),
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: DiseaseField(), // Hastalık alanını buraya ekleyin
                   ),
                 ),
                 const SizedBox(
@@ -294,6 +307,28 @@ class _RegistrationPage extends State<RegistrationPage> {
     );
   }
 
+  TextFormField DiseaseField() {
+    return TextFormField(
+      controller: _diseaseController,
+      decoration: InputDecoration(
+        border: InputBorder.none,
+        prefixIcon: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20.0),
+          child: Icon(
+            FontAwesomeIcons.heartbeat,
+            size: 26,
+            color: kWhite,
+          ),
+        ),
+        hintText: 'Disease (Optional)',
+        hintStyle: kBodyText,
+      ),
+      style: kBodyText,
+      keyboardType: TextInputType.text,
+      textInputAction: TextInputAction.done,
+    );
+  }
+
   Container registerButton(Size size, BuildContext context) {
     return Container(
       height: size.height * 0.08,
@@ -308,8 +343,15 @@ class _RegistrationPage extends State<RegistrationPage> {
               ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text("Passwords does not match")));
             } else {
-              var result = await Auth()
-                  .register(email, username, password, confirmpassword);
+              // Auth servisinin register metodunu güncelleyerek disease bilgisini de parametre olarak geçirin
+              var result = await Auth().register(
+                  email,
+                  username,
+                  password,
+                  confirmpassword,
+                  _diseaseController
+                      .text // hastalık bilgisi parametre olarak eklendi
+                  );
               if (result == "Registration Successful") {
                 ScaffoldMessenger.of(context)
                     .showSnackBar(SnackBar(content: Text(result!)));

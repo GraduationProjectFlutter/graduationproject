@@ -25,6 +25,7 @@ class _ProfilePageState extends State<ProfilePage> {
       TextEditingController();
   final TextEditingController _newPasswordController = TextEditingController();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final TextEditingController _diseaseController = TextEditingController();
 
   final ImagePicker _picker = ImagePicker();
   final getuserName = Auth().getUserName();
@@ -42,6 +43,10 @@ class _ProfilePageState extends State<ProfilePage> {
     if (user != null) {
       _usernameController.text = user!.displayName ?? '';
       _emailController.text = user!.email ?? '';
+      // Hastalık bilgisi Firebase'den yüklenmeli
+      _firestore.collection('users').doc(user!.uid).get().then((document) {
+        _diseaseController.text = document.data()?['disease'] ?? '';
+      });
     }
   }
 
@@ -63,6 +68,63 @@ class _ProfilePageState extends State<ProfilePage> {
         ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Error updating password. ${e.message}')));
       }
+    }
+  }
+
+  void _updateProfile() async {
+    // Kullanıcı girişi kontrolü
+    if (user == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('No user found for update.')),
+      );
+      return;
+    }
+
+    // Hastalık bilgisini al
+    String diseaseInfo = _diseaseController.text.trim();
+
+    // Firestore'daki kullanıcı belgesine eriş
+    DocumentReference userDocRef =
+        _firestore.collection('users').doc(user?.uid);
+
+    // Belgeyi al ve var olup olmadığını kontrol et
+    DocumentSnapshot userDocSnapshot = await userDocRef.get();
+
+    if (!userDocSnapshot.exists) {
+      // Belge yoksa kullanıcıyı bilgilendir
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('User document does not exist.')),
+      );
+      return;
+    }
+
+    // Hastalık bilgisini kontrol et ve gerekiyorsa güncelle
+    Map<String, dynamic> updateData = {};
+    if (diseaseInfo.isNotEmpty) {
+      updateData['disease'] = diseaseInfo;
+    } else {
+      // Hastalık bilgisi boşsa, bu alanı kaldır
+      updateData['disease'] = FieldValue.delete();
+    }
+
+    try {
+      // Kullanıcı belgesini güncelle
+      await userDocRef.update(updateData);
+
+      // Başarılı güncelleme mesajı
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Profile updated successfully.')),
+      );
+    } on FirebaseException catch (e) {
+      // Firebase ile ilgili hataları yakala
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error updating profile: ${e.message}')),
+      );
+    } catch (e) {
+      // Diğer hataları yakala
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error updating profile: $e')),
+      );
     }
   }
 
@@ -112,6 +174,20 @@ class _ProfilePageState extends State<ProfilePage> {
                   label: Text('Change Password'),
                   style: ElevatedButton.styleFrom(
                       minimumSize: Size.fromHeight(50)),
+                ),
+                SizedBox(height: 50),
+                TextField(
+                  controller: _diseaseController,
+                  decoration: InputDecoration(
+                    labelText: 'Disease (if any)',
+                    prefixIcon: Icon(Icons.sick),
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                SizedBox(height: 10),
+                ElevatedButton(
+                  onPressed: _updateProfile,
+                  child: Text('Update Profile'),
                 ),
               ],
             ),
@@ -175,6 +251,14 @@ class _ProfilePageState extends State<ProfilePage> {
                 obscureText: true,
                 autocorrect: false,
                 enableSuggestions: false,
+              ),
+              TextField(
+                controller: _diseaseController,
+                decoration: InputDecoration(
+                  labelText: 'Disease (if any)',
+                  prefixIcon: Icon(Icons.sick),
+                  border: OutlineInputBorder(),
+                ),
               ),
             ],
           ),

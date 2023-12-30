@@ -1,5 +1,7 @@
 import 'package:bitirme0/pages/recipeDetailsPage.dart';
 import 'package:bitirme0/pages/recipe_card.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:algolia/algolia.dart';
 
@@ -47,8 +49,24 @@ class _AlgoliaSearchPageState extends State<AlgoliaSearchPage> {
       _searching = true;
     });
 
+    // Kullanıcının hastalık bilgisini Firebase'den çekme
+    String userDisease = '';
+    if (FirebaseAuth.instance.currentUser != null) {
+      var userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .get();
+
+      userDisease = userDoc.data()?['disease'] ?? '';
+    }
+
     AlgoliaQuery query =
         algolia.instance.index('recipes_index').search(searchText);
+
+    // Kullanıcının hastalığına göre filtreleme yapma
+    if (userDisease.isNotEmpty) {
+      query = query.setFilters('NOT ingredients:${userDisease}');
+    }
 
     try {
       AlgoliaQuerySnapshot querySnapshot = await query.getObjects();
@@ -61,7 +79,7 @@ class _AlgoliaSearchPageState extends State<AlgoliaSearchPage> {
         _searchResults = [];
         _searching = false;
       });
-      print(e); 
+      print(e);
     }
   }
 
