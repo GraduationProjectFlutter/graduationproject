@@ -1,4 +1,6 @@
 import 'package:bitirme0/css.dart';
+import 'package:bitirme0/pages/comment.dart';
+import 'package:bitirme0/services/auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -33,6 +35,50 @@ class RecipeDetailsPage extends StatelessWidget {
     required this.calories,
     required this.isFavorite,
   });
+
+  final textcontroller = TextEditingController();
+
+  void addcommentShare(String commentText) async {
+    String? userName = await Auth().getUserName();
+
+    FirebaseFirestore.instance
+        .collection('recipes')
+        .doc(recipeID)
+        .collection('Comments')
+        .add({
+      "text": commentText,
+      "name": userName ?? '', // Use the null-aware operator to handle null
+      "time": Timestamp.now(),
+    });
+  }
+
+  void commentShare(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text("Add Comment"),
+        content: TextField(
+          controller: textcontroller,
+          decoration: InputDecoration(hintText: "Write a comment..."),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+              addcommentShare(textcontroller.text);
+            },
+            child: Text("Post"),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Text("Cancel"),
+          )
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -245,6 +291,42 @@ class RecipeDetailsPage extends StatelessWidget {
                             return Text(snapshot.data!);
                           }
                         }),
+                    SizedBox(height: 20),
+                    Column(
+                      children: [button(() => commentShare(context))],
+                    ),
+                    SizedBox(height: 10),
+                    StreamBuilder<QuerySnapshot>(
+                      stream: FirebaseFirestore.instance
+                          .collection("recipes")
+                          .doc(recipeID)
+                          .collection("Comments")
+                          .orderBy("time", descending: true)
+                          .snapshots(),
+                      builder: (context, snapshot) {
+                        if (!snapshot.hasData) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+
+                        List<Comment> comments = snapshot.data!.docs.map((doc) {
+                          final data = doc.data() as Map<String, dynamic>;
+                          String text = data['text'] ?? '';
+                          String user = data['name'] ?? '';
+                          Timestamp time = data['time'] as Timestamp;
+
+                          return Comment(
+                              text: text, user: user, time: stringdata(time));
+                        }).toList();
+
+                        return ListView(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          children: comments,
+                        );
+                      },
+                    )
                   ],
                 ),
               ),
@@ -275,5 +357,24 @@ class RecipeDetailsPage extends StatelessWidget {
       sum += double.parse(rating);
     });
     return sum / ratings.length;
+  }
+
+  GestureDetector button(Function()? onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Text(
+        "Comment",
+        style: TextStyle(color: Colors.black, fontSize: 18),
+      ),
+    );
+  }
+
+  String stringdata(Timestamp times) {
+    DateTime datatime = times.toDate();
+    String year = datatime.year.toString();
+    String month = datatime.month.toString();
+    String day = datatime.day.toString();
+    String data = '$day/$month/$year';
+    return data;
   }
 }
