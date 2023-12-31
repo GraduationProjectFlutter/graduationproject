@@ -49,21 +49,17 @@ class _AlgoliaSearchPageState extends State<AlgoliaSearchPage> {
       _searching = true;
     });
 
-    // Kullanıcının hastalık bilgisini Firebase'den çekme
     String userDisease = '';
     if (FirebaseAuth.instance.currentUser != null) {
       var userDoc = await FirebaseFirestore.instance
           .collection('users')
           .doc(FirebaseAuth.instance.currentUser!.uid)
           .get();
-
       userDisease = userDoc.data()?['disease'] ?? '';
     }
 
     AlgoliaQuery query =
         algolia.instance.index('recipes_index').search(searchText);
-
-    // Kullanıcının hastalığına göre filtreleme yapma
     if (userDisease.isNotEmpty) {
       query = query.setFilters('NOT ingredients:${userDisease}');
     }

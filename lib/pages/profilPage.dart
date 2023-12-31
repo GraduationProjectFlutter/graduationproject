@@ -43,7 +43,6 @@ class _ProfilePageState extends State<ProfilePage> {
     if (user != null) {
       _usernameController.text = user!.displayName ?? '';
       _emailController.text = user!.email ?? '';
-      // Hastalık bilgisi Firebase'den yüklenmeli
       _firestore.collection('users').doc(user!.uid).get().then((document) {
         _diseaseController.text = document.data()?['disease'] ?? '';
       });
@@ -72,59 +71,71 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   void _updateProfile() async {
-    // Kullanıcı girişi kontrolü
     if (user == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('No user found for update.')),
       );
       return;
     }
-
-    // Hastalık bilgisini al
     String diseaseInfo = _diseaseController.text.trim();
-
-    // Firestore'daki kullanıcı belgesine eriş
     DocumentReference userDocRef =
         _firestore.collection('users').doc(user?.uid);
 
-    // Belgeyi al ve var olup olmadığını kontrol et
     DocumentSnapshot userDocSnapshot = await userDocRef.get();
-
     if (!userDocSnapshot.exists) {
-      // Belge yoksa kullanıcıyı bilgilendir
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('User document does not exist.')),
       );
       return;
     }
 
-    // Hastalık bilgisini kontrol et ve gerekiyorsa güncelle
     Map<String, dynamic> updateData = {};
     if (diseaseInfo.isNotEmpty) {
       updateData['disease'] = diseaseInfo;
     } else {
-      // Hastalık bilgisi boşsa, bu alanı kaldır
       updateData['disease'] = FieldValue.delete();
     }
 
     try {
-      // Kullanıcı belgesini güncelle
       await userDocRef.update(updateData);
 
-      // Başarılı güncelleme mesajı
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Profile updated successfully.')),
       );
     } on FirebaseException catch (e) {
-      // Firebase ile ilgili hataları yakala
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error updating profile: ${e.message}')),
       );
     } catch (e) {
-      // Diğer hataları yakala
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error updating profile: $e')),
       );
+    }
+  }
+
+  Future<void> _pickAndUpdateProfileImage() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      File imageFile = File(pickedFile.path);
+      try {
+        String filePath = 'profile_images/${user!.uid}/${DateTime.now()}.png';
+        UploadTask task =
+            FirebaseStorage.instance.ref().child(filePath).putFile(imageFile);
+
+        TaskSnapshot snapshot = await task;
+        final url = await snapshot.ref.getDownloadURL();
+
+        await user!.updatePhotoURL(url);
+        setState(() {});
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Profile image updated successfully.')),
+        );
+      } on FirebaseException catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error updating profile image: ${e.message}')),
+        );
+      }
     }
   }
 
@@ -140,12 +151,20 @@ class _ProfilePageState extends State<ProfilePage> {
           child: Center(
             child: ListView(
               children: [
-                CircleAvatar(
-                  radius: 50,
-                  backgroundImage: user?.photoURL != null
-                      ? NetworkImage(user!.photoURL!)
-                      : AssetImage('assets/default_profile.png')
-                          as ImageProvider,
+                GestureDetector(
+                  onTap: _pickAndUpdateProfileImage,
+                  child: CircleAvatar(
+                    radius: 50,
+                    backgroundImage: _imageFile != null
+                        ? FileImage(_imageFile!)
+                        : (user?.photoURL != null
+                                ? NetworkImage(user!.photoURL!)
+                                : AssetImage('assets/default_profile.png'))
+                            as ImageProvider,
+                    child: Align(
+                      alignment: Alignment.bottomRight,
+                    ),
+                  ),
                 ),
                 SizedBox(height: 24),
                 namecall(),

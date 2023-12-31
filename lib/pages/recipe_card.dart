@@ -9,6 +9,7 @@ class RecipeCard extends StatefulWidget {
   final String thumbnailUrl;
   final String recipeID;
   bool isFavorite;
+  bool containsDiseaseIngredient;
 
   RecipeCard({
     Key? key,
@@ -18,6 +19,7 @@ class RecipeCard extends StatefulWidget {
     required this.thumbnailUrl,
     required this.recipeID,
     required this.isFavorite,
+    this.containsDiseaseIngredient = false,
   }) : super(key: key);
 
   @override
@@ -26,6 +28,47 @@ class RecipeCard extends StatefulWidget {
 
 class _RecipeCardState extends State<RecipeCard> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkForDiseaseIngredient();
+  }
+
+  void _checkForDiseaseIngredient() async {
+    final userDiseases = await _getUserDiseases();
+    final recipeMaterials = await _getRecipeMaterials();
+    if (userDiseases.isNotEmpty && recipeMaterials!.isNotEmpty) {
+      final matchFound = userDiseases.any((disease) =>
+          recipeMaterials.any((material) => material.contains(disease)));
+      if (matchFound) {
+        setState(() {
+          widget.containsDiseaseIngredient = true;
+        });
+      }
+    }
+  }
+
+  Future<List<String>> _getUserDiseases() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      final userDoc = await _firestore.collection('users').doc(user.uid).get();
+      String diseasesRaw = userDoc.data()?['disease'] ?? '';
+      List<String> diseases =
+          diseasesRaw.split(',').map((disease) => disease.trim()).toList();
+      return diseases;
+    }
+    return [];
+  }
+
+  Future<List<String>?> _getRecipeMaterials() async {
+    final recipeDoc =
+        await _firestore.collection('recipes').doc(widget.recipeID).get();
+    final materialsString = recipeDoc.data()?['materials'] as String?;
+    final materialsList = materialsString?.split(',') ?? [];
+    return materialsList;
+  }
+
   void _toggleFavorite() async {
     if (widget.isFavorite != null) {
       setState(() {
@@ -124,6 +167,12 @@ class _RecipeCardState extends State<RecipeCard> {
               ],
             ),
           ),
+          if (widget.containsDiseaseIngredient)
+            Positioned(
+              right: 0,
+              top: 0,
+              child: Icon(Icons.close, size: 48, color: Colors.red),
+            ),
         ],
       ),
     );
