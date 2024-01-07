@@ -359,7 +359,7 @@ class _AddRecipe extends State<AddRecipe> {
 
   TextFormField descriptionRecipe() {
     return TextFormField(
-        maxLength: 200,
+        maxLength: 1000,
         onSaved: (newValue) {
           description = newValue!;
         },
@@ -386,7 +386,7 @@ class _AddRecipe extends State<AddRecipe> {
 
   TextFormField materialsRecipe() {
     return TextFormField(
-        maxLength: 200,
+        maxLength: 1000,
         onSaved: (newValue) {
           materials = newValue!;
         },
@@ -444,7 +444,7 @@ class _AddRecipe extends State<AddRecipe> {
 
   TextFormField recipeName() {
     return TextFormField(
-      maxLength: 20,
+      maxLength: 100,
       onSaved: (newValue) {
         name = newValue!;
       },
