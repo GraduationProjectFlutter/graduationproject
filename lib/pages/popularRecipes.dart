@@ -1,5 +1,6 @@
 import 'package:bitirme0/pages/recipeDetailsPage.dart';
 import 'package:bitirme0/pages/recipe_card.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -40,6 +41,19 @@ class _popularRecipes extends State<popularRecipes> {
     }
   }
 
+  void _incrementViewCount(String recipeID) async {
+    DocumentReference userClickCountsRef = _firestore
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection('clickCounts')
+        .doc(recipeID);
+
+    await userClickCountsRef.set({
+      'recipeID': recipeID,
+      'clickCount': FieldValue.increment(1),
+    }, SetOptions(merge: true));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,6 +72,7 @@ class _popularRecipes extends State<popularRecipes> {
 
           return InkWell(
             onTap: () {
+              _incrementViewCount(recipeData['recipeID']);
               Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => RecipeDetailsPage(
                   title: recipeData['name'] ?? 'Unnamed Recipe',
@@ -89,7 +104,7 @@ class _popularRecipes extends State<popularRecipes> {
               thumbnailUrl:
                   recipeData['url'] ?? 'assets/default_recipe_image.png',
               recipeID: recipeData['recipeID'],
-              isFavorite: recipeData['isFavorite'] ?? false, 
+              isFavorite: recipeData['isFavorite'] ?? false,
             ),
           );
         },

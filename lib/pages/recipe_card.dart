@@ -28,7 +28,7 @@ class RecipeCard extends StatefulWidget {
 
 class _RecipeCardState extends State<RecipeCard> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-
+  int clickCount = 0;
   @override
   void initState() {
     super.initState();
@@ -89,6 +89,21 @@ class _RecipeCardState extends State<RecipeCard> {
         await userFavoritesRef.delete();
       }
     }
+  }
+
+  void _incrementViewCount() async {
+    clickCount++; // Increment the counter on each click
+
+    DocumentReference userClickCountsRef = _firestore
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection('clickCounts')
+        .doc(widget.recipeID);
+
+    await userClickCountsRef.set({
+      'recipeID': widget.recipeID,
+      'clickCount': FieldValue.increment(1),
+    }, SetOptions(merge: true));
   }
 
   @override

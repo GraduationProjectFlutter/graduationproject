@@ -28,7 +28,7 @@ class Auth {
   }
 
   Future<String?> register(String email, String username, String password,
-      String confirmpassword) async {
+      String confirmpassword, String text) async {
     try {
       UserCredential credential = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
@@ -52,6 +52,20 @@ class Auth {
           return "Registration Failed";
       }
     }
+  }
+
+  Future<String?> incrementViewCount(String recipeID) async {
+    DocumentReference userClickCountsRef = _firestore
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection('clickCounts')
+        .doc(recipeID);
+
+    await userClickCountsRef.set({
+      'recipeID': recipeID,
+      'clickCount': FieldValue.increment(1),
+    }, SetOptions(merge: true));
+    return null;
   }
 
   Future<String?> forgotPassword(String email) async {

@@ -1,5 +1,6 @@
 import 'package:bitirme0/pages/recipeDetailsPage.dart';
 import 'package:bitirme0/pages/recipe_card.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -10,13 +11,67 @@ class seeAll extends StatefulWidget {
 
 class _SeeAllState extends State<seeAll> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   late List<Map<String, dynamic>> _recipes;
 
   @override
   void initState() {
     super.initState();
     _recipes = [];
-    _loadRecipes();
+    _loadMostClickedRecipes();
+  }
+
+  Future<void> _loadMostClickedRecipes() async {
+    try {
+      User? user = _auth.currentUser;
+
+      QuerySnapshot querySnapshot = await _firestore
+          .collection('users')
+          .doc(user!.uid)
+          .collection('clickCounts')
+          .orderBy('clickCount', descending: true)
+          .get();
+
+      List<String> recipeIDs = querySnapshot.docs
+          .map((DocumentSnapshot document) => document['recipeID'] as String)
+          .toList();
+
+      if (recipeIDs.length < 3) {
+        try {
+          QuerySnapshot additionalRecipesSnapshot = await _firestore
+              .collection('recipes')
+              .limit(3 - recipeIDs.length)
+              .get();
+
+          if (additionalRecipesSnapshot.docs.isNotEmpty) {
+            setState(() {
+              _recipes.addAll(additionalRecipesSnapshot.docs
+                  .map((DocumentSnapshot document) =>
+                      document.data() as Map<String, dynamic>)
+                  .toList());
+            });
+          }
+        } catch (e) {
+          print('Error loading additional recipes: $e');
+        }
+      }
+
+      QuerySnapshot recipeDetailsSnapshot = await _firestore
+          .collection('recipes')
+          .where(FieldPath.documentId, whereIn: recipeIDs)
+          .limit(3)
+          .get();
+      setState(() {
+        _recipes.addAll(recipeDetailsSnapshot.docs
+            .map((DocumentSnapshot document) =>
+                document.data() as Map<String, dynamic>)
+            .toList());
+      });
+      _recipes.shuffle();
+      _recipes = _recipes.take(3).toList();
+    } catch (e) {
+      print('Error loading most clicked recipes: $e');
+    }
   }
 
   Future<void> _loadRecipes() async {
@@ -39,6 +94,19 @@ class _SeeAllState extends State<seeAll> {
     }
   }
 
+  void _incrementViewCount(String recipeID) async {
+    DocumentReference userClickCountsRef = _firestore
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection('clickCounts')
+        .doc(recipeID);
+
+    await userClickCountsRef.set({
+      'recipeID': recipeID,
+      'clickCount': FieldValue.increment(1),
+    }, SetOptions(merge: true));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,6 +125,7 @@ class _SeeAllState extends State<seeAll> {
 
           return InkWell(
             onTap: () {
+              _incrementViewCount(recipeData['recipeID']);
               Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => RecipeDetailsPage(
                   title: recipeData['name'] ?? 'Unnamed Recipe',

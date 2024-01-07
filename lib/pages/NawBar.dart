@@ -88,7 +88,7 @@ class NavBar extends StatelessWidget {
               Navigator.pop(context);
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => CookifyAI()),
+                MaterialPageRoute(builder: (context) => allRecipes()),
               );
             },
           ),

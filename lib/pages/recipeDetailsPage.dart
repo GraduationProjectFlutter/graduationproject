@@ -47,7 +47,7 @@ class RecipeDetailsPage extends StatelessWidget {
         .collection('Comments')
         .add({
       "text": commentText,
-      "name": userName ?? '', // Use the null-aware operator to handle null
+      "name": userName ?? '',
       "time": Timestamp.now(),
     });
   }

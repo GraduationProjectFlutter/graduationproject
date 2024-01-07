@@ -19,20 +19,22 @@ class _AlgoliaSearchPageState extends State<AlgoliaSearchPage> {
   List<AlgoliaObjectSnapshot> _searchResults = [];
   bool _searching = false;
   TextEditingController _searchController = TextEditingController();
-
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   @override
   void initState() {
     super.initState();
-    _searchController.addListener(_onSearchChanged);
+    _searchController
+        .addListener(_onSearchChanged); // Arama metni değişikliğini dinler
   }
 
   @override
   void dispose() {
-    _searchController.removeListener(_onSearchChanged);
-    _searchController.dispose();
+    _searchController.removeListener(_onSearchChanged); // Dinleyiciyi kaldırır
+    _searchController.dispose(); // Denetleyiciyi temizler
     super.dispose();
   }
 
+  // Arama değiştiğinde çağrılan fonksiyon
   void _onSearchChanged() {
     if (_searchController.text.isNotEmpty) {
       _performSearch(_searchController.text);
@@ -44,6 +46,20 @@ class _AlgoliaSearchPageState extends State<AlgoliaSearchPage> {
     }
   }
 
+  void _incrementViewCount(String recipeID) async {
+    DocumentReference userClickCountsRef = _firestore
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection('clickCounts')
+        .doc(recipeID);
+
+    await userClickCountsRef.set({
+      'recipeID': recipeID,
+      'clickCount': FieldValue.increment(1),
+    }, SetOptions(merge: true));
+  }
+
+  // Algolia üzerinde arama yapılmasını sağlayan fonksiyon
   void _performSearch(String searchText) async {
     setState(() {
       _searching = true;
@@ -94,6 +110,7 @@ class _AlgoliaSearchPageState extends State<AlgoliaSearchPage> {
               hintText: 'Search for recipes...',
             ),
           ),
+          // Arama sonuçlarını listelediğimiz bölüm
           Expanded(
             child: _searching
                 ? Center(child: CircularProgressIndicator())
@@ -103,6 +120,8 @@ class _AlgoliaSearchPageState extends State<AlgoliaSearchPage> {
                       final data = _searchResults[index].data;
                       return InkWell(
                         onTap: () {
+                          _incrementViewCount(data['recipeID']);
+                          // RecipeDetailsPage sayfasına yönlendirme
                           Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => RecipeDetailsPage(
                               title: data['name'] ?? 'Unnamed Recipe',
@@ -115,13 +134,15 @@ class _AlgoliaSearchPageState extends State<AlgoliaSearchPage> {
                               creator: data['addedBy'] ?? 'Unknown',
                               creatorID: data['creatorID'] ?? 'Unknown',
                               materials: data['materials'] ?? 'Unknown',
-                              recipeID: _searchResults[index].objectID,
+                              recipeID: data['recipeID'] ??
+                                  'No description provided.',
                               category: data['category'] ?? 'Unknown',
                               calories: data['calories'] ?? 'Unknown',
                               isFavorite: data['isFavorite'] ?? false,
                             ),
                           ));
                         },
+                        // RecipeCard widgetını kullanarak tarif kartlarını gösterme
                         child: RecipeCard(
                           title: data['name'] ?? 'Unnamed Recipe',
                           rating: data['rateAverage']?.toString() ?? 'N/A',

@@ -1,16 +1,30 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:bitirme0/pages/recipe_card.dart';
 import 'package:bitirme0/pages/recipeDetailsPage.dart';
 
-class CookifyAI extends StatelessWidget {
+class allRecipes extends StatelessWidget {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  void _incrementViewCount(String recipeID) async {
+    DocumentReference userClickCountsRef = FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection('clickCounts')
+        .doc(recipeID);
+
+    await userClickCountsRef.set({
+      'recipeID': recipeID,
+      'clickCount': FieldValue.increment(1),
+    }, SetOptions(merge: true));
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Cookify AI'),
+        title: Text('All Recipe'),
       ),
       body: StreamBuilder(
         stream: _firestore.collection('recipes').snapshots(),
@@ -36,6 +50,7 @@ class CookifyAI extends StatelessWidget {
 
               return InkWell(
                 onTap: () {
+                  _incrementViewCount(recipeData['recipeID']);
                   Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => RecipeDetailsPage(
                       title: recipeData['name'] ?? 'Unnamed Recipe',
