@@ -37,7 +37,6 @@ class _ProfilePageState extends State<ProfilePage> {
   void initState() {
     super.initState();
     _loadUserData();
-    _loadProfileImage();
   }
 
   void _loadUserData() {
@@ -114,12 +113,6 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
-  void _loadProfileImage() {
-    setState(() {
-      _imageFile = Auth.profileImageFile;
-    });
-  }
-
   Future<void> _pickAndUpdateProfileImage() async {
     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
@@ -133,10 +126,6 @@ class _ProfilePageState extends State<ProfilePage> {
         final url = await snapshot.ref.getDownloadURL();
 
         await user!.updatePhotoURL(url);
-
-        // Call _loadProfileImage to update the displayed profile image
-        _loadProfileImage();
-
         setState(() {});
 
         ScaffoldMessenger.of(context).showSnackBar(
@@ -212,6 +201,13 @@ class _ProfilePageState extends State<ProfilePage> {
                     labelText: 'Disease (if any)',
                     prefixIcon: Icon(Icons.sick),
                     border: OutlineInputBorder(),
+                    suffixIcon: IconButton(
+                      icon: Icon(Icons.info_outline),
+                      tooltip: 'Important Note',
+                      onPressed: () {
+                        _showDiseaseNoteDialog();
+                      },
+                    ),
                   ),
                 ),
                 SizedBox(height: 10),
@@ -369,5 +365,28 @@ class _ProfilePageState extends State<ProfilePage> {
         );
       }
     }
+  }
+
+  void _showDiseaseNoteDialog() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Important Note'),
+          content: Text(
+            'Please list any foods or drinks that may trigger your condition. '
+            'This will help us tailor a more suitable experience for you.',
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Understood'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }
