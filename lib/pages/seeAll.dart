@@ -61,6 +61,7 @@ class _SeeAllState extends State<seeAll> {
           .where(FieldPath.documentId, whereIn: recipeIDs)
           .limit(3)
           .get();
+
       setState(() {
         _recipes.addAll(recipeDetailsSnapshot.docs
             .map((DocumentSnapshot document) =>

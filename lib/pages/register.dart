@@ -1,9 +1,13 @@
+import 'dart:io';
+
 import 'package:bitirme0/css.dart';
 import 'package:bitirme0/services/auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:bitirme0/pages/login.dart';
+import 'package:image_picker/image_picker.dart';
 
 class RegistrationPage extends StatefulWidget {
   const RegistrationPage({super.key});
@@ -22,7 +26,8 @@ class _RegistrationPage extends State<RegistrationPage> {
   final TextEditingController confirmpassword_controller =
       TextEditingController();
   final TextEditingController _diseaseController = TextEditingController();
-
+  File? imagePicked;
+  ImagePicker picker = ImagePicker();
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -82,16 +87,46 @@ class _RegistrationPage extends State<RegistrationPage> {
                       child: CircleAvatar(
                         radius: size.width * 0.14,
                         backgroundColor: Colors.grey[400]?.withOpacity(0.5),
-                        child: Icon(
-                          FontAwesomeIcons.user,
-                          color: kWhite,
-                          size: size.width * 0.1,
-                        ),
+                        child: imagePicked != null
+                            ? ClipOval(
+                                child: Image.file(
+                                  imagePicked!,
+                                  width: size.width * 0.28,
+                                  height: size.width * 0.28,
+                                  fit: BoxFit.cover,
+                                ),
+                              )
+                            : Icon(
+                                FontAwesomeIcons.camera,
+                                color: kWhite,
+                                size: size.width * 0.1,
+                              ),
                       ),
                     ),
                     Positioned(
-                        top: size.width * 0.15,
-                        left: size.width * 0.56,
+                      top: size.width * 0.15,
+                      left: size.width * 0.56,
+                      child: GestureDetector(
+                        onTap: () async {
+                          try {
+                            var result = await picker.pickImage(
+                              source: ImageSource.gallery,
+                              maxHeight: 150,
+                              maxWidth: 350,
+                              imageQuality: 100,
+                            );
+                            if (result == null) {
+                              return;
+                            }
+                            final temp = File(result.path);
+                            setState(() {
+                              imagePicked = temp;
+                              Auth.profileImageFile = imagePicked;
+                            });
+                          } on PlatformException catch (e) {
+                            print(e.toString());
+                          }
+                        },
                         child: Container(
                           height: size.width * 0.1,
                           width: size.width * 0.1,
@@ -104,7 +139,9 @@ class _RegistrationPage extends State<RegistrationPage> {
                             FontAwesomeIcons.arrowUp,
                             color: kWhite,
                           ),
-                        ))
+                        ),
+                      ),
+                    )
                   ],
                 ),
                 SizedBox(

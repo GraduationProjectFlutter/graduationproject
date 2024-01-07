@@ -37,6 +37,7 @@ class _ProfilePageState extends State<ProfilePage> {
   void initState() {
     super.initState();
     _loadUserData();
+    _loadProfileImage();
   }
 
   void _loadUserData() {
@@ -111,6 +112,12 @@ class _ProfilePageState extends State<ProfilePage> {
         SnackBar(content: Text('Error updating profile: $e')),
       );
     }
+  }
+
+  void _loadProfileImage() {
+    setState(() {
+      _imageFile = Auth.profileImageFile;
+    });
   }
 
   Future<void> _pickAndUpdateProfileImage() async {
