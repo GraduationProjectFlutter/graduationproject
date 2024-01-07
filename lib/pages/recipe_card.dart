@@ -184,7 +184,7 @@ class _RecipeCardState extends State<RecipeCard> {
           ),
           if (widget.containsDiseaseIngredient)
             Positioned(
-              right: 0,
+              left: 0,
               top: 0,
               child: Icon(Icons.close, size: 48, color: Colors.red),
             ),
