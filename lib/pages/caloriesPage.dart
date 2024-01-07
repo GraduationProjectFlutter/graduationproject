@@ -87,7 +87,7 @@ class _CaloriesPageState extends State<CaloriesPage> {
           children: [
             Icon(Icons.local_fire_department, color: Colors.white),
             SizedBox(width: 10),
-            Text('Kalori Arama', style: TextStyle(color: Colors.white)),
+            Text('Calorie Search', style: TextStyle(color: Colors.white)),
           ],
         ),
         backgroundColor: Color.fromARGB(255, 211, 101, 10),
