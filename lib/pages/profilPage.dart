@@ -133,6 +133,10 @@ class _ProfilePageState extends State<ProfilePage> {
         final url = await snapshot.ref.getDownloadURL();
 
         await user!.updatePhotoURL(url);
+
+        // Call _loadProfileImage to update the displayed profile image
+        _loadProfileImage();
+
         setState(() {});
 
         ScaffoldMessenger.of(context).showSnackBar(

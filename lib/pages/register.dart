@@ -28,6 +28,7 @@ class _RegistrationPage extends State<RegistrationPage> {
   final TextEditingController _diseaseController = TextEditingController();
   File? imagePicked;
   ImagePicker picker = ImagePicker();
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
