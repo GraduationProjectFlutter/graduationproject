@@ -5,21 +5,26 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:algolia/algolia.dart';
 
+// Algolia konfigürasyonunu başlatma.
 final Algolia algolia = Algolia.init(
   applicationId: 'V34BNVX4EG',
   apiKey: '5d4afae0fc4c38386e5364ab0149a84f',
 );
 
+// Algolia arama sayfası için StatefulWidget.
 class AlgoliaSearchPage extends StatefulWidget {
   @override
   _AlgoliaSearchPageState createState() => _AlgoliaSearchPageState();
 }
 
 class _AlgoliaSearchPageState extends State<AlgoliaSearchPage> {
-  List<AlgoliaObjectSnapshot> _searchResults = [];
-  bool _searching = false;
-  TextEditingController _searchController = TextEditingController();
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  List<AlgoliaObjectSnapshot> _searchResults = []; // Arama sonuçları listesi.
+  bool _searching = false; // Arama yapılıp yapılmadığını kontrol eder.
+  TextEditingController _searchController =
+      TextEditingController(); // Arama metni için denetleyici.
+  final FirebaseFirestore _firestore =
+      FirebaseFirestore.instance; // Firestore örneği.
+
   @override
   void initState() {
     super.initState();
@@ -37,7 +42,7 @@ class _AlgoliaSearchPageState extends State<AlgoliaSearchPage> {
   // Arama değiştiğinde çağrılan fonksiyon
   void _onSearchChanged() {
     if (_searchController.text.isNotEmpty) {
-      _performSearch(_searchController.text);
+      _performSearch(_searchController.text); // Arama yap
     } else {
       setState(() {
         _searchResults = [];
@@ -46,6 +51,7 @@ class _AlgoliaSearchPageState extends State<AlgoliaSearchPage> {
     }
   }
 
+  // Kullanıcının tıklama sayısını artıran fonksiyon.
   void _incrementViewCount(String recipeID) async {
     DocumentReference userClickCountsRef = _firestore
         .collection('users')
@@ -77,13 +83,14 @@ class _AlgoliaSearchPageState extends State<AlgoliaSearchPage> {
     AlgoliaQuery query =
         algolia.instance.index('recipes_index').search(searchText);
     if (userDisease.isNotEmpty) {
-      query = query.setFilters('NOT ingredients:${userDisease}');
+      query = query.setFilters(
+          'NOT ingredients:${userDisease}'); // Kullanıcının hastalığına göre filtreleme.
     }
 
     try {
       AlgoliaQuerySnapshot querySnapshot = await query.getObjects();
       setState(() {
-        _searchResults = querySnapshot.hits;
+        _searchResults = querySnapshot.hits; // Arama sonuçlarını alır.
         _searching = false;
       });
     } catch (e) {
@@ -103,6 +110,7 @@ class _AlgoliaSearchPageState extends State<AlgoliaSearchPage> {
       ),
       body: Column(
         children: [
+          // Arama çubuğu
           TextField(
             controller: _searchController,
             decoration: InputDecoration(
@@ -121,6 +129,8 @@ class _AlgoliaSearchPageState extends State<AlgoliaSearchPage> {
                       return InkWell(
                         onTap: () {
                           _incrementViewCount(data['recipeID']);
+                          // Tarif detay sayfasına geçiş.
+                          // Tarif bilgileri burada gösterilir.
                           // RecipeDetailsPage sayfasına yönlendirme
                           Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => RecipeDetailsPage(

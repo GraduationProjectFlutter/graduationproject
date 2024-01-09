@@ -18,10 +18,10 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List<Container> cards = [];
-  final getuserName = Auth().getUserName();
+  final getuserName = Auth().getUserName(); // Kullanıcı adını geitren servis
 
   final db = FirebaseFirestore.instance;
-  int selectedIndex = 0;
+  int selectedIndex = 0; // Alt navigasyon için seçili index
   TextEditingController n1 = TextEditingController();
   var name = "";
 
@@ -30,6 +30,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();
   }
 
+  // Alt navigasyon elemanına tıklandığında çalışacak fonksiyon
   void onItemTapped(int index) {
     setState(() {
       selectedIndex = index;
@@ -72,6 +73,7 @@ class _HomePageState extends State<HomePage> {
         child: NavBar(),
       ),
       appBar: AppBar(),
+      // Alt navigasyon çubuğu
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         currentIndex: selectedIndex,

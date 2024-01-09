@@ -4,8 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:bitirme0/pages/recipe_card.dart';
 import 'package:bitirme0/pages/recipeDetailsPage.dart';
 
-// ... (your imports and class definition)
-
 class CookifyAI extends StatelessWidget {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 

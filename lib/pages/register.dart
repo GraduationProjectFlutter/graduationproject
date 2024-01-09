@@ -17,6 +17,7 @@ class RegistrationPage extends StatefulWidget {
 }
 
 class _RegistrationPage extends State<RegistrationPage> {
+  // Form alanları için controller'lar ve diğer değişkenler.
   final TextEditingController mail_controller = TextEditingController();
   final TextEditingController password_controller = TextEditingController();
   bool _isChecked = false;
@@ -36,6 +37,7 @@ class _RegistrationPage extends State<RegistrationPage> {
     var collection = firestore.collection('users');
     return Stack(
       children: [
+        // Arka plan resmi için ShaderMask.
         ShaderMask(
           shaderCallback: (rect) => const LinearGradient(
             begin: Alignment.bottomCenter,
@@ -59,6 +61,7 @@ class _RegistrationPage extends State<RegistrationPage> {
             backgroundColor: Colors.transparent,
             elevation: 0,
             leading: IconButton(
+              // Geri butonu.
               onPressed: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => LoginPage()));
@@ -205,7 +208,7 @@ class _RegistrationPage extends State<RegistrationPage> {
                       color: Colors.grey[600]?.withOpacity(0.5),
                       borderRadius: BorderRadius.circular(16),
                     ),
-                    child: DiseaseField(), // Hastalık alanını buraya ekleyin
+                    child: DiseaseField(),
                   ),
                 ),
                 const SizedBox(

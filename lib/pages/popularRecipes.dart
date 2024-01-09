@@ -17,9 +17,10 @@ class _popularRecipes extends State<popularRecipes> {
   void initState() {
     super.initState();
     _recipes = [];
-    _loadRecipes();
+    _loadRecipes(); // Sayfa yüklendiğinde tarifleri yükler.
   }
 
+  // Firestore'dan popüler tarifleri yükleyen fonksiyon.
   Future<void> _loadRecipes() async {
     try {
       QuerySnapshot querySnapshot = await _firestore
@@ -41,6 +42,7 @@ class _popularRecipes extends State<popularRecipes> {
     }
   }
 
+  // Kullanıcının tarif görüntüleme sayısını artıran fonksiyon.
   void _incrementViewCount(String recipeID) async {
     DocumentReference userClickCountsRef = _firestore
         .collection('users')
@@ -75,6 +77,8 @@ class _popularRecipes extends State<popularRecipes> {
               _incrementViewCount(recipeData['recipeID']);
               Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => RecipeDetailsPage(
+                  // Tarif detayları sayfasına yönlendirme.
+                  // Tarifin bilgilerini RecipeDetailsPage'a geçiriyoruz.
                   title: recipeData['name'] ?? 'Unnamed Recipe',
                   cookTime: recipeData['duration'] ?? 'Unknown',
                   thumbnailUrl: recipeData['url'] ?? 'assets/images/pizza.png',

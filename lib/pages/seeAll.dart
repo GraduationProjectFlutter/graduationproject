@@ -12,15 +12,16 @@ class seeAll extends StatefulWidget {
 class _SeeAllState extends State<seeAll> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  late List<Map<String, dynamic>> _recipes;
+  late List<Map<String, dynamic>> _recipes; // Tariflerin saklandığı liste.
 
   @override
   void initState() {
     super.initState();
     _recipes = [];
-    _loadMostClickedRecipes();
+    _loadMostClickedRecipes(); // En çok tıklanan tarifleri yükler.
   }
 
+  // Kullanıcının en çok tıkladığı tarifleri Firestore'dan çeker.
   Future<void> _loadMostClickedRecipes() async {
     try {
       User? user = _auth.currentUser;
@@ -75,6 +76,7 @@ class _SeeAllState extends State<seeAll> {
     }
   }
 
+  // Tüm tarifleri Firestore'dan çeker.
   Future<void> _loadRecipes() async {
     try {
       QuerySnapshot querySnapshot =
@@ -86,8 +88,8 @@ class _SeeAllState extends State<seeAll> {
               .map((DocumentSnapshot document) =>
                   document.data() as Map<String, dynamic>)
               .toList();
-          _recipes.shuffle();
-          _recipes = _recipes.take(3).toList();
+          _recipes.shuffle(); // Tarifleri karıştırır.
+          _recipes = _recipes.take(3).toList(); // İlk 3 tarifi alır.
         });
       }
     } catch (e) {
@@ -95,6 +97,7 @@ class _SeeAllState extends State<seeAll> {
     }
   }
 
+  // Tıklama sayısını artıran fonksiyon.
   void _incrementViewCount(String recipeID) async {
     DocumentReference userClickCountsRef = _firestore
         .collection('users')
@@ -118,17 +121,20 @@ class _SeeAllState extends State<seeAll> {
               fontWeight: FontWeight.bold,
             ),
           ),
-          automaticallyImplyLeading: false),
+          automaticallyImplyLeading: false), // Geri butonunu gizler.
       body: ListView.builder(
         itemCount: _recipes.length,
         itemBuilder: (context, index) {
           Map<String, dynamic> recipeData = _recipes[index];
 
+          // Tarif kartına tıklandığında detay sayfasına yönlendirir
           return InkWell(
             onTap: () {
               _incrementViewCount(recipeData['recipeID']);
               Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => RecipeDetailsPage(
+                  // Tarif detayları.
+                  // Tarif verilerini alır, yoksa varsayılan değerleri kullanır.
                   title: recipeData['name'] ?? 'Unnamed Recipe',
                   cookTime: recipeData['duration'] ?? 'Unknown',
                   thumbnailUrl: recipeData['url'] ?? 'assets/images/pizza.png',
@@ -151,6 +157,7 @@ class _SeeAllState extends State<seeAll> {
                 ),
               ));
             },
+            // Tarif kartı widget'ını oluşturur.
             child: RecipeCard(
               title: recipeData['name'] ?? 'Unnamed Recipe',
               rating: recipeData['rateAverage']?.toString() ?? 'N/A',

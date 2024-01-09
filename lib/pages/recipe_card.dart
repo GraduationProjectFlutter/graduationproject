@@ -29,12 +29,14 @@ class RecipeCard extends StatefulWidget {
 class _RecipeCardState extends State<RecipeCard> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   int clickCount = 0;
+
   @override
   void initState() {
     super.initState();
-    _checkForDiseaseIngredient();
+    _checkForDiseaseIngredient(); // Hastalık içeren malzemeyi kontrol et.
   }
 
+  // Kullanıcının hastalıklarını kontrol edip tarif malzemeleriyle eşleşip eşleşmediğini kontrol eder
   void _checkForDiseaseIngredient() async {
     final userDiseases = await _getUserDiseases();
     final recipeMaterials = await _getRecipeMaterials();
@@ -49,6 +51,7 @@ class _RecipeCardState extends State<RecipeCard> {
     }
   }
 
+  // Kullanıcının hastalıklarını Firestore'dan çeker.
   Future<List<String>> _getUserDiseases() async {
     final user = FirebaseAuth.instance.currentUser;
     if (user != null) {
@@ -61,6 +64,7 @@ class _RecipeCardState extends State<RecipeCard> {
     return [];
   }
 
+  // Tarifin malzemelerini Firestore'dan çeker.
   Future<List<String>?> _getRecipeMaterials() async {
     final recipeDoc =
         await _firestore.collection('recipes').doc(widget.recipeID).get();
@@ -69,6 +73,7 @@ class _RecipeCardState extends State<RecipeCard> {
     return materialsList;
   }
 
+  // Favori tarifleri değiştirme/takip etme işlevi.
   void _toggleFavorite() async {
     if (widget.isFavorite != null) {
       setState(() {
@@ -91,8 +96,9 @@ class _RecipeCardState extends State<RecipeCard> {
     }
   }
 
+  // Görüntülenme sayısını arttıran işlev.
   void _incrementViewCount() async {
-    clickCount++; // Increment the counter on each click
+    clickCount++; // Tıklama sayısını arttırır.
 
     DocumentReference userClickCountsRef = _firestore
         .collection('users')
@@ -135,6 +141,7 @@ class _RecipeCardState extends State<RecipeCard> {
         ),
       ),
       child: Stack(
+        // Tarif adını gösteren metin.
         children: [
           Align(
             alignment: Alignment.center,
@@ -149,6 +156,7 @@ class _RecipeCardState extends State<RecipeCard> {
               ),
             ),
           ),
+          // Favori ikonunu gösteren buton.
           Positioned(
             right: 10,
             top: 10,
@@ -160,6 +168,7 @@ class _RecipeCardState extends State<RecipeCard> {
               onPressed: _toggleFavorite,
             ),
           ),
+          // Yıldız ve puan bilgisini gösteren alan.
           Positioned(
             left: 10,
             bottom: 10,
@@ -171,6 +180,7 @@ class _RecipeCardState extends State<RecipeCard> {
               ],
             ),
           ),
+          // Pişirme süresini gösteren alan.
           Positioned(
             right: 10,
             bottom: 10,
@@ -182,6 +192,7 @@ class _RecipeCardState extends State<RecipeCard> {
               ],
             ),
           ),
+          // Hastalık içeren malzemeyi belirten ikon.
           if (widget.containsDiseaseIngredient)
             Positioned(
               left: 0,
