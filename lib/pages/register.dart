@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:bitirme0/css.dart';
 import 'package:bitirme0/services/auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:bitirme0/pages/login.dart';
 import 'package:image_picker/image_picker.dart';
@@ -17,7 +17,6 @@ class RegistrationPage extends StatefulWidget {
 }
 
 class _RegistrationPage extends State<RegistrationPage> {
-  // Form alanları için controller'lar ve diğer değişkenler.
   final TextEditingController mail_controller = TextEditingController();
   final TextEditingController password_controller = TextEditingController();
   bool _isChecked = false;
@@ -27,8 +26,8 @@ class _RegistrationPage extends State<RegistrationPage> {
   final TextEditingController confirmpassword_controller =
       TextEditingController();
   final TextEditingController _diseaseController = TextEditingController();
-  File? imagePicked;
-  ImagePicker picker = ImagePicker();
+  File? _selectedImage;
+  final ImagePicker _picker = ImagePicker();
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +36,6 @@ class _RegistrationPage extends State<RegistrationPage> {
     var collection = firestore.collection('users');
     return Stack(
       children: [
-        // Arka plan resmi için ShaderMask.
         ShaderMask(
           shaderCallback: (rect) => const LinearGradient(
             begin: Alignment.bottomCenter,
@@ -61,7 +59,6 @@ class _RegistrationPage extends State<RegistrationPage> {
             backgroundColor: Colors.transparent,
             elevation: 0,
             leading: IconButton(
-              // Geri butonu.
               onPressed: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => LoginPage()));
@@ -91,46 +88,16 @@ class _RegistrationPage extends State<RegistrationPage> {
                       child: CircleAvatar(
                         radius: size.width * 0.14,
                         backgroundColor: Colors.grey[400]?.withOpacity(0.5),
-                        child: imagePicked != null
-                            ? ClipOval(
-                                child: Image.file(
-                                  imagePicked!,
-                                  width: size.width * 0.28,
-                                  height: size.width * 0.28,
-                                  fit: BoxFit.cover,
-                                ),
-                              )
-                            : Icon(
-                                FontAwesomeIcons.camera,
-                                color: kWhite,
-                                size: size.width * 0.1,
-                              ),
+                        child: Icon(
+                          FontAwesomeIcons.user,
+                          color: kWhite,
+                          size: size.width * 0.1,
+                        ),
                       ),
                     ),
                     Positioned(
-                      top: size.width * 0.15,
-                      left: size.width * 0.56,
-                      child: GestureDetector(
-                        onTap: () async {
-                          try {
-                            var result = await picker.pickImage(
-                              source: ImageSource.gallery,
-                              maxHeight: 150,
-                              maxWidth: 350,
-                              imageQuality: 100,
-                            );
-                            if (result == null) {
-                              return;
-                            }
-                            final temp = File(result.path);
-                            setState(() {
-                              imagePicked = temp;
-                              Auth.profileImageFile = imagePicked;
-                            });
-                          } on PlatformException catch (e) {
-                            print(e.toString());
-                          }
-                        },
+                        top: size.width * 0.15,
+                        left: size.width * 0.56,
                         child: Container(
                           height: size.width * 0.1,
                           width: size.width * 0.1,
@@ -143,9 +110,7 @@ class _RegistrationPage extends State<RegistrationPage> {
                             FontAwesomeIcons.arrowUp,
                             color: kWhite,
                           ),
-                        ),
-                      ),
-                    )
+                        ))
                   ],
                 ),
                 SizedBox(
@@ -208,7 +173,7 @@ class _RegistrationPage extends State<RegistrationPage> {
                       color: Colors.grey[600]?.withOpacity(0.5),
                       borderRadius: BorderRadius.circular(16),
                     ),
-                    child: DiseaseField(),
+                    child: DiseaseField(), // Hastalık alanını buraya ekleyin
                   ),
                 ),
                 const SizedBox(
@@ -384,15 +349,8 @@ class _RegistrationPage extends State<RegistrationPage> {
               ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text("Passwords does not match")));
             } else {
-              // Auth servisinin register metodunu güncelleyerek disease bilgisini de parametre olarak geçirin
-              var result = await Auth().register(
-                  email,
-                  username,
-                  password,
-                  confirmpassword,
-                  _diseaseController
-                      .text // hastalık bilgisi parametre olarak eklendi
-                  );
+              var result = await Auth().register(email, username, password,
+                  confirmpassword, _diseaseController.text);
               if (result == "Registration Successful") {
                 ScaffoldMessenger.of(context)
                     .showSnackBar(SnackBar(content: Text(result!)));
@@ -410,5 +368,29 @@ class _RegistrationPage extends State<RegistrationPage> {
         ),
       ),
     );
+  }
+
+  Future<void> _pickImage() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        _selectedImage = File(pickedFile.path);
+      });
+    }
+  }
+
+  Future<String?> _uploadImage(File image) async {
+    String filePath = 'profile_images/${DateTime.now()}.png';
+    UploadTask uploadTask =
+        FirebaseStorage.instance.ref().child(filePath).putFile(image);
+    TaskSnapshot snapshot = await uploadTask;
+    return await snapshot.ref.getDownloadURL();
+  }
+
+  Future<void> _register() async {
+    String? imageUrl;
+    if (_selectedImage != null) {
+      imageUrl = await _uploadImage(_selectedImage!);
+    }
   }
 }
