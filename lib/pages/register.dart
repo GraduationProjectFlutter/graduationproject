@@ -125,7 +125,6 @@ class _RegistrationPage extends State<RegistrationPage> {
                             final temp = File(result.path);
                             setState(() {
                               imagePicked = temp;
-                              Auth.profileImageFile = imagePicked;
                             });
                           } on PlatformException catch (e) {
                             print(e.toString());

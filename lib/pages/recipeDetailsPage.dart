@@ -21,7 +21,6 @@ class RecipeDetailsPage extends StatelessWidget {
   final String calories;
   final bool isFavorite;
 
-  //Constructor
   RecipeDetailsPage({
     required this.title,
     required this.cookTime,
@@ -39,7 +38,6 @@ class RecipeDetailsPage extends StatelessWidget {
 
   final textcontroller = TextEditingController();
 
-  // Yorum yapma işlevi
   void addcommentShare(String commentText) async {
     String? userName = await Auth().getUserName();
 
@@ -49,12 +47,11 @@ class RecipeDetailsPage extends StatelessWidget {
         .collection('Comments')
         .add({
       "text": commentText,
-      "name": userName ?? '',
+      "name": userName ?? '', // Use the null-aware operator to handle null
       "time": Timestamp.now(),
     });
   }
 
-  // Yorum yapma ekranı
   void commentShare(BuildContext context) {
     showDialog(
       context: context,
@@ -92,7 +89,6 @@ class RecipeDetailsPage extends StatelessWidget {
         body: SafeArea(
           child: CustomScrollView(
             slivers: [
-              // SliverAppbar tasarımı
               SliverAppBar(
                 leading: IconButton(
                   icon: Icon(
@@ -339,7 +335,6 @@ class RecipeDetailsPage extends StatelessWidget {
         ));
   }
 
-  // Puan değerinin hesaplanması.
   Future<String> ratingValue() async {
     final FirebaseFirestore firestore = FirebaseFirestore.instance;
     final FirebaseAuth auth = FirebaseAuth.instance;
@@ -356,7 +351,6 @@ class RecipeDetailsPage extends StatelessWidget {
     return '-';
   }
 
-  // Ortalama puanın hesaplanması.
   double calculateAverageRating(Map<String, dynamic> ratings) {
     double sum = 0;
     ratings.forEach((userId, rating) {
@@ -365,7 +359,6 @@ class RecipeDetailsPage extends StatelessWidget {
     return sum / ratings.length;
   }
 
-  // Yorum yap butonu.
   GestureDetector button(Function()? onTap) {
     return GestureDetector(
       onTap: onTap,
@@ -376,7 +369,6 @@ class RecipeDetailsPage extends StatelessWidget {
     );
   }
 
-  // Zamanın string formatına dönüştürülmesi.
   String stringdata(Timestamp times) {
     DateTime datatime = times.toDate();
     String year = datatime.year.toString();

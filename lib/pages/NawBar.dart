@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:bitirme0/pages/allRecipes.dart';
 
-// Navigasyon çekmecesi (Drawer) widget'ı.
 class NavBar extends StatelessWidget {
   const NavBar({Key? key});
 
@@ -19,7 +18,6 @@ class NavBar extends StatelessWidget {
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
-          // Drawer başlığı.
           DrawerHeader(
             decoration: BoxDecoration(
               color: Colors.blue,
@@ -32,7 +30,6 @@ class NavBar extends StatelessWidget {
               ),
             ),
           ),
-          // Ana Sayfa'ya yönlendirme.
           ListTile(
             leading: Icon(Icons.home),
             title: Text('Home'),

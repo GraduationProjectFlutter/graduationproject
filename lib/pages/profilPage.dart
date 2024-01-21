@@ -19,7 +19,6 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   User? user = FirebaseAuth.instance.currentUser;
-  // Kullanıcı bilgilerini düzenlemek için TextEditingController'lar.
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _currentPasswordController =
@@ -37,10 +36,9 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
-    _loadUserData(); // Kullanıcı verilerini yüklemek için initState içinde çağrılır.
+    _loadUserData();
   }
 
-  // Kullanıcının mevcut verilerini yükler.
   void _loadUserData() {
     if (user != null) {
       _usernameController.text = user!.displayName ?? '';
@@ -51,7 +49,6 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
-  // Kullanıcının şifresini değiştirir.
   void _changePassword() async {
     String currentPassword = _currentPasswordController.text.trim();
     String newPassword = _newPasswordController.text.trim();
@@ -73,7 +70,6 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
-  // Kullanıcı profili güncellemesi yapar.
   void _updateProfile() async {
     if (user == null) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -117,9 +113,13 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
-  // Kullanıcının profil resmini seçip günceller.
   Future<void> _pickAndUpdateProfileImage() async {
-    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    final pickedFile = await _picker.pickImage(
+      source: ImageSource.gallery,
+      maxHeight: 150,
+      maxWidth: 350,
+      imageQuality: 100,
+    );
     if (pickedFile != null) {
       File imageFile = File(pickedFile.path);
       try {
@@ -156,15 +156,18 @@ class _ProfilePageState extends State<ProfilePage> {
           child: Center(
             child: ListView(
               children: [
-                // Profil resmini seçmek için GestureDetector.
                 GestureDetector(
                   onTap: _pickAndUpdateProfileImage,
                   child: CircleAvatar(
                     radius: 50,
                     backgroundImage: _imageFile != null
-                        ? FileImage(_imageFile!)
+                        ? FileImage(
+                            _imageFile!,
+                          )
                         : (user?.photoURL != null
-                                ? NetworkImage(user!.photoURL!)
+                                ? NetworkImage(
+                                    user!.photoURL!,
+                                  )
                                 : AssetImage('assets/default_profile.png'))
                             as ImageProvider,
                     child: Align(
@@ -175,7 +178,6 @@ class _ProfilePageState extends State<ProfilePage> {
                 SizedBox(height: 24),
                 namecall(),
                 SizedBox(height: 16),
-                // E-posta adresini gösteren TextField.
                 TextField(
                   controller: _emailController,
                   decoration: InputDecoration(
@@ -186,7 +188,6 @@ class _ProfilePageState extends State<ProfilePage> {
                   readOnly: true,
                 ),
                 SizedBox(height: 24),
-                // Kullanıcı adını düzenlemek için ElevatedButton.
                 ElevatedButton.icon(
                   onPressed: _showEditUsernameDialog,
                   icon: Icon(Icons.edit),
@@ -195,7 +196,6 @@ class _ProfilePageState extends State<ProfilePage> {
                       minimumSize: Size.fromHeight(50)),
                 ),
                 SizedBox(height: 16),
-                // Şifre değişikliği için ElevatedButton.
                 ElevatedButton.icon(
                   onPressed: () => _showChangePasswordDialog(),
                   icon: Icon(Icons.lock),
@@ -204,7 +204,6 @@ class _ProfilePageState extends State<ProfilePage> {
                       minimumSize: Size.fromHeight(50)),
                 ),
                 SizedBox(height: 50),
-                // Hastalık bilgisini girmek için TextField.
                 TextField(
                   controller: _diseaseController,
                   decoration: InputDecoration(
@@ -221,7 +220,6 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
                 SizedBox(height: 10),
-                // Profili güncellemek için ElevatedButton.
                 ElevatedButton(
                   onPressed: _updateProfile,
                   child: Text('Update Profile'),
@@ -234,7 +232,6 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  // Kullanıcı adını getirmek için FutureBuilder.
   FutureBuilder<String?> namecall() {
     return FutureBuilder(
         future: getuserName,
@@ -261,7 +258,6 @@ class _ProfilePageState extends State<ProfilePage> {
         });
   }
 
-  // Şifre değiştirme diyaloğunu gösterir.
   void _showChangePasswordDialog() {
     showDialog(
       context: context,
@@ -271,7 +267,6 @@ class _ProfilePageState extends State<ProfilePage> {
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // Mevcut parolayı girmek için TextField.
               TextField(
                 controller: _currentPasswordController,
                 decoration: InputDecoration(
@@ -282,7 +277,6 @@ class _ProfilePageState extends State<ProfilePage> {
                 autocorrect: false,
                 enableSuggestions: false,
               ),
-              // Yeni parolayı girmek için TextField.
               TextField(
                 controller: _newPasswordController,
                 decoration: InputDecoration(
@@ -293,24 +287,13 @@ class _ProfilePageState extends State<ProfilePage> {
                 autocorrect: false,
                 enableSuggestions: false,
               ),
-              // Hastalık bilgisi girmek için TextField.
-              TextField(
-                controller: _diseaseController,
-                decoration: InputDecoration(
-                  labelText: 'Disease (if any)',
-                  prefixIcon: Icon(Icons.sick),
-                  border: OutlineInputBorder(),
-                ),
-              ),
             ],
           ),
           actions: [
-            // İptal butonu.
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
               child: Text('Cancel'),
             ),
-            // Değiştir butonu.
             TextButton(
               onPressed: () {
                 _changePassword();
@@ -324,7 +307,6 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  // Kullanıcı adını düzenleme diyaloğunu gösteren fonksiyon.
   void _showEditUsernameDialog() {
     showDialog(
       context: context,
@@ -338,12 +320,10 @@ class _ProfilePageState extends State<ProfilePage> {
             ],
           ),
           actions: [
-            // İptal butonu.
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
               child: Text('Cancel'),
             ),
-            // Kaydet butonu.
             TextButton(
               onPressed: () {
                 _updateUsername();
@@ -357,7 +337,6 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  // Kullanıcı adını güncelleme fonksiyonu.
   void _updateUsername() async {
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
         .collection('users')
@@ -389,7 +368,6 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
-  // Hastalık bilgisi notu gösteren diyalog.
   void _showDiseaseNoteDialog() {
     showDialog(
       context: context,
@@ -401,7 +379,6 @@ class _ProfilePageState extends State<ProfilePage> {
             'This will help us tailor a more suitable experience for you.',
           ),
           actions: <Widget>[
-            // Anladım butonu.
             TextButton(
               child: Text('Understood'),
               onPressed: () {

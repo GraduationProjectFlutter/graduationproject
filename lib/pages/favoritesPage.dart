@@ -7,7 +7,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:bitirme0/pages/recipe_card.dart';
 import 'package:bitirme0/pages/recipeDetailsPage.dart';
 
-// Favoriler sayfası için StatefulWidget oluşturuyoruz.
 class FavoritesPage extends StatefulWidget {
   @override
   _FavoritesPageState createState() => _FavoritesPageState();
@@ -22,10 +21,9 @@ class _FavoritesPageState extends State<FavoritesPage> {
   @override
   void initState() {
     super.initState();
-    _loadFavoriteRecipes(); // Sayfa başlatıldığında favori tarifleri yükler.
+    _loadFavoriteRecipes();
   }
 
-  // Favori tarifleri yüklemek için bir asenkron fonksiyon.
   Future<void> _loadFavoriteRecipes() async {
     try {
       var userFavoritesRef = _firestore
@@ -57,7 +55,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
     }
   }
 
-  // Favori olmayan tarifleri listeden kaldırır ve sayfayı günceller.
+  // Favori olmayanları kaldır ve sayfayı güncelle
   void _removeNonFavorites() {
     favoriteRecipes.removeWhere((recipe) => recipe['isFavorite'] == false);
     setState(() {});
@@ -77,7 +75,6 @@ class _FavoritesPageState extends State<FavoritesPage> {
                 var recipe = favoriteRecipes[index];
                 return GestureDetector(
                   onTap: () {
-                    // Tarif detay sayfasına yönlendirme.
                     Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => RecipeDetailsPage(
                         title: recipe['name'],
@@ -95,7 +92,6 @@ class _FavoritesPageState extends State<FavoritesPage> {
                       ),
                     ));
                   },
-                  // Tarif kartı widget'ı.
                   child: RecipeCard(
                     title: recipe['name'],
                     rating: recipe['rateAverage'].toString(),

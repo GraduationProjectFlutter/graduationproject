@@ -24,6 +24,10 @@ class _HomePageState extends State<HomePage> {
   int selectedIndex = 0; // Alt navigasyon için seçili index
   TextEditingController n1 = TextEditingController();
   var name = "";
+  GlobalKey<RefreshIndicatorState> _refreshKeySeeAll =
+      GlobalKey<RefreshIndicatorState>();
+  GlobalKey<RefreshIndicatorState> _refreshKeyPopularRecipes =
+      GlobalKey<RefreshIndicatorState>();
 
   @override
   void initState() {
@@ -142,10 +146,50 @@ class _HomePageState extends State<HomePage> {
                 ),
                 _buildRecipeCard2(),
                 Expanded(
-                  child: seeAll(),
+                  child: RefreshIndicator(
+                    key: _refreshKeySeeAll,
+                    onRefresh: () async {
+                      // Implement the logic to refresh the seeAll section
+                      // For example, you can call a function to reload the data
+                      setState(() {
+                        // Your refresh logic here
+                        seeAll();
+
+                        // Pop the current page
+                        Navigator.pop(context);
+
+                        // Push the same page again
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => HomePage()),
+                        );
+                      });
+                    },
+                    child: seeAll(),
+                  ),
                 ),
                 Expanded(
-                  child: popularRecipes(),
+                  child: RefreshIndicator(
+                    key: _refreshKeyPopularRecipes,
+                    onRefresh: () async {
+                      // Implement the logic to refresh the seeAll section
+                      // For example, you can call a function to reload the data
+                      setState(() {
+                        // Your refresh logic here
+                        popularRecipes();
+
+                        // Pop the current page
+                        Navigator.pop(context);
+
+                        // Push the same page again
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => HomePage()),
+                        );
+                      });
+                    },
+                    child: popularRecipes(),
+                  ),
                 ),
               ],
             );

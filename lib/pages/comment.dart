@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 
+// Yorumlar için kullanılan bir Stateless Widget.
+// Her bir yorum için metin, kullanıcı adı ve zaman bilgisi gösterir.
 class Comment extends StatelessWidget {
+  // Yorumun metni
   final String text;
+  // Yorumu yapan kullanıcının adı
   final String user;
+  // Yorumun yapıldığı zaman
   final String time;
 
   const Comment(
@@ -11,6 +16,7 @@ class Comment extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      // Yorumun arka planını ve kenar yuvarlaklığını ayarlar
       decoration: BoxDecoration(
         color: Colors.grey[200],
         borderRadius: BorderRadius.circular(4),
@@ -20,10 +26,13 @@ class Comment extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Yorum metnini gösterir
           Text(text),
           SizedBox(height: 10),
+          // Kullanıcı adı ve zaman bilgisini satır olarak gösterir
           Row(
             children: [
+              // Kullanıcı adını gösterir
               Text(
                 user,
                 style: TextStyle(color: Colors.grey[500]),

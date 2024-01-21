@@ -57,7 +57,7 @@ class _AddRecipe extends State<AddRecipe> {
   @override
   void initState() {
     super.initState();
-    whenStartPrefs();
+    whenStartPrefs(); // Başlangıçta tercihler yüklenir
   }
 
   @override
@@ -386,7 +386,7 @@ class _AddRecipe extends State<AddRecipe> {
 
   TextFormField materialsRecipe() {
     return TextFormField(
-        maxLength: 1000,
+        maxLength: 200,
         onSaved: (newValue) {
           materials = newValue!;
         },
@@ -444,7 +444,7 @@ class _AddRecipe extends State<AddRecipe> {
 
   TextFormField recipeName() {
     return TextFormField(
-      maxLength: 100,
+      maxLength: 20,
       onSaved: (newValue) {
         name = newValue!;
       },

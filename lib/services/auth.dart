@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -8,8 +6,6 @@ class Auth {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final storage = FirebaseStorage.instance;
-
-  static File? profileImageFile;
 
   Future<String?> loginController(String email, String password) async {
     try {
@@ -31,15 +27,30 @@ class Auth {
     }
   }
 
+  Future<String?> incrementViewCount(String recipeID) async {
+    DocumentReference userClickCountsRef = _firestore
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection('clickCounts')
+        .doc(recipeID);
+
+    await userClickCountsRef.set({
+      'recipeID': recipeID,
+      'clickCount': FieldValue.increment(1),
+    }, SetOptions(merge: true));
+    return null;
+  }
+
   Future<String?> register(String email, String username, String password,
-      String confirmpassword, String text) async {
+      String confirmpassword, String? disease) async {
     try {
       UserCredential credential = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
-      await _firestore.collection("users").add({
+      await _firestore.collection("users").doc(credential.user!.uid).set({
         "email": email,
         "username": username,
-        "userID": credential.user!.uid
+        "userID": credential.user!.uid,
+        "disease": disease
       });
       return "Registration Successful";
     } on FirebaseAuthException catch (e) {
@@ -56,20 +67,6 @@ class Auth {
           return "Registration Failed";
       }
     }
-  }
-
-  Future<String?> incrementViewCount(String recipeID) async {
-    DocumentReference userClickCountsRef = _firestore
-        .collection('users')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .collection('clickCounts')
-        .doc(recipeID);
-
-    await userClickCountsRef.set({
-      'recipeID': recipeID,
-      'clickCount': FieldValue.increment(1),
-    }, SetOptions(merge: true));
-    return null;
   }
 
   Future<String?> forgotPassword(String email) async {
