@@ -18,6 +18,7 @@ class _CaloriesPageState extends State<CaloriesPage> {
   bool _searching = false;
   TextEditingController _searchController = TextEditingController();
   double _totalCalories = 0;
+  String _lastTappedRecipeName = "";
 
   @override
   void initState() {
@@ -76,6 +77,10 @@ class _CaloriesPageState extends State<CaloriesPage> {
     final data = hit.data;
     double calories = double.tryParse(data['calories']?.toString() ?? '0') ?? 0;
     _addToTotalCalories(calories);
+
+    setState(() {
+      _lastTappedRecipeName = data['name'] ?? 'Unnamed Recipe';
+    });
   }
 
   @override
@@ -139,13 +144,25 @@ class _CaloriesPageState extends State<CaloriesPage> {
   }
 
   Widget _buildTotalCaloriesDisplay() {
-    return Container(
-      padding: EdgeInsets.all(16.0),
-      color: Color.fromARGB(255, 202, 127, 77),
-      child: Text(
-        'Total Calories: ${_totalCalories.toStringAsFixed(2)}',
-        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-      ),
+    return Column(
+      children: [
+        Container(
+          padding: EdgeInsets.all(16.0),
+          color: Color.fromARGB(255, 202, 127, 77),
+          child: Text(
+            'Total Calories: ${_totalCalories.toStringAsFixed(2)}',
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+        ),
+        if (_lastTappedRecipeName.isNotEmpty)
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.0),
+            child: Text(
+              'Last Tapped Recipe: $_lastTappedRecipeName',
+              style: TextStyle(fontSize: 18),
+            ),
+          ),
+      ],
     );
   }
 }
