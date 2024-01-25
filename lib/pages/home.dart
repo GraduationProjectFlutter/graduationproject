@@ -239,3 +239,47 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
+
+
+/* BAZI ARAMA ÖNERİLERİ 
+
+Widget _buildSearchBar() {
+  return Container(
+    padding: EdgeInsets.symmetric(horizontal: 10),
+    child: TextField(
+      onChanged: (query) {
+        // Anlık arama önerileri için Algolia sorgusu
+      },
+      decoration: InputDecoration(
+        hintText: 'Search recipes...',
+        prefixIcon: Icon(Icons.search),
+        border: OutlineInputBorder(),
+      ),
+    ),
+  );
+} */
+
+/* BAZI DİNAMİ KATEGÖRİ TABANLI LİSTELEMELER 
+
+Widget _buildCategoryTabs() {
+  return TabBar(
+    tabs: [
+      Tab(text: 'Vegan'),
+      Tab(text: 'Gluten-free'),
+      Tab(text: 'Quick Meals'),
+      // Diğer kategoriler...
+    ],
+    // Tab bar ile ilişkili işlevsellik
+  );
+}
+
+Widget _buildCategoryView() {
+  return TabBarView(
+    children: [
+      _buildCategoryRecipes('Vegan'),
+      _buildCategoryRecipes('Gluten-free'),
+      _buildCategoryRecipes('Quick Meals'),
+      // Diğer kategorilere ait widget'lar...
+    ],
+  );
+}  */

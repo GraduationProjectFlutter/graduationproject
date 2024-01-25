@@ -129,3 +129,63 @@ class NavBar extends StatelessWidget {
     );
   }
 }
+
+
+/* KULLANICI PROFİL FOTOSU VE BİLGİLERİNİ GÖRÜNTÜLEMEK 
+
+User? currentUser = FirebaseAuth.instance.currentUser;
+
+@override
+Widget build(BuildContext context) {
+  return Drawer(
+    child: ListView(
+      padding: EdgeInsets.zero,
+      children: <Widget>[
+        UserAccountsDrawerHeader(
+          accountName: Text(currentUser?.displayName ?? 'User Name'),
+          accountEmail: Text(currentUser?.email ?? 'email@example.com'),
+          currentAccountPicture: CircleAvatar(
+            backgroundImage: currentUser?.photoURL != null
+                ? NetworkImage(currentUser!.photoURL!)
+                : AssetImage('assets/default_user.png') as ImageProvider,
+          ),
+          decoration: BoxDecoration(
+            color: Colors.blue,
+          ),
+        ),
+        // Diğer ListTile widget'ları...
+      ],
+    ),
+  );
+}
+*/
+
+
+/* BAZI TEMA DEĞİŞTİRMEK VEYA EKLEMEK
+
+bool _darkTheme = false;
+
+@override
+Widget build(BuildContext context) {
+  return Drawer(
+    child: ListView(
+      padding: EdgeInsets.zero,
+      children: <Widget>[
+        // DrawerHeader ve diğer ListTile'lar...
+
+        SwitchListTile(
+          title: Text('Dark Theme'),
+          value: _darkTheme,
+          onChanged: (bool value) {
+            setState(() {
+              _darkTheme = value;
+              // Tema değiştirme kodunu burada ekleyin
+            });
+          },
+          secondary: Icon(_darkTheme ? Icons.dark_mode : Icons.light_mode),
+        ),
+      ],
+    ),
+  );
+}    */
+

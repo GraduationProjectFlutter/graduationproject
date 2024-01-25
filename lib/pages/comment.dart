@@ -52,3 +52,104 @@ class Comment extends StatelessWidget {
     );
   }
 }
+
+
+/* YORUMLARA YANIT VERME ÖZELLİĞİ 
+
+class Comment extends StatelessWidget {
+  final String text, user, time;
+  final Function onReply;
+
+  const Comment({
+    Key? key,
+    required this.text,
+    required this.user,
+    required this.time,
+    required this.onReply,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    // ... (Diğer widget yapılandırmaları)
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        TextButton(
+          onPressed: () => onReply(),
+          child: Text('Reply'),
+        ),
+      ],
+    );
+  }
+}  */
+
+
+/* YORUM BEĞENME BUTONU
+
+class Comment extends StatelessWidget {
+  final String text, user, time;
+  final int likes;
+  final Function onLike;
+
+  const Comment({
+    Key? key,
+    required this.text,
+    required this.user,
+    required this.time,
+    required this.likes,
+    required this.onLike,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    // ... (Diğer widget yapılandırmaları)
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        TextButton.icon(
+          onPressed: () => onLike(),
+          icon: Icon(Icons.thumb_up_alt_outlined),
+          label: Text(likes.toString()),
+        ),
+        // Diğer elemanlar
+      ],
+    );
+  }
+}  */
+
+
+/* class Comment extends StatelessWidget {
+  final String text, user, time;
+
+  const Comment({
+    Key? key,
+    required this.text,
+    required this.user,
+    required this.time,
+  }) : super(key: key);
+
+  void _reportComment() {
+    // Raporlama işlemleri
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // ... (Diğer widget yapılandırmaları)
+
+    return PopupMenuButton(
+      onSelected: (value) {
+        if (value == 'report') {
+          _reportComment();
+        }
+      },
+      itemBuilder: (context) => [
+        PopupMenuItem(
+          value: 'report',
+          child: Text('Report Comment'),
+        ),
+      ],
+    );
+  }
+}  */

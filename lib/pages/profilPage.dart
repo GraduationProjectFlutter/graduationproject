@@ -391,3 +391,73 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 }
+
+
+/*  BAZI PROFİL İSTATİSTİKLERİ (RECİPE,FAVORİTES,COMMENTS)
+
+Widget _buildProfileStats() {
+  return FutureBuilder(
+    future: _getUserActivityStats(),
+    builder: (context, snapshot) {
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return CircularProgressIndicator();
+      }
+      if (snapshot.hasError) {
+        return Text('Error: ${snapshot.error}');
+      }
+      Map<String, int> stats = snapshot.data as Map<String, int>;
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          _buildStatItem("Tarifler", stats['recipes'] ?? 0),
+          _buildStatItem("Favoriler", stats['favorites'] ?? 0),
+          _buildStatItem("Yorumlar", stats['comments'] ?? 0),
+        ],
+      );
+    },
+  );
+}
+
+Widget _buildStatItem(String label, int count) {
+  return Column(
+    children: [
+      Text('$count', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+      SizedBox(height: 4),
+      Text(label, style: TextStyle(fontSize: 16)),
+    ],
+  );
+}
+
+Future<Map<String, int>> _getUserActivityStats() async {
+  // Firebase sorgularınızı burada gerçekleştirin
+}
+*/
+
+
+/* KULLANICI TARAFINDAN YÜKLENEN SON TARİFLER
+
+Widget _buildRecentRecipes() {
+  return FutureBuilder(
+    future: _getUserRecentRecipes(),
+    builder: (context, snapshot) {
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return CircularProgressIndicator();
+      }
+      if (snapshot.hasError) {
+        return Text('Error: ${snapshot.error}');
+      }
+      List<Widget> recipeWidgets = (snapshot.data as List<Recipe>).map((recipe) {
+        return ListTile(
+          leading: Image.network(recipe.imageUrl),
+          title: Text(recipe.title),
+          onTap: () {/* Tarif detay sayfasına yönlendir */},
+        );
+      }).toList();
+      return Column(children: recipeWidgets);
+    },
+  );
+}
+
+Future<List<Recipe>> _getUserRecentRecipes() async {
+  // Firebase sorgularınızı burada gerçekleştirin
+}

@@ -378,3 +378,40 @@ class RecipeDetailsPage extends StatelessWidget {
     return data;
   }
 }
+
+
+/* TARİF PAYLAŞMAK İÇİN 
+
+import 'package:share/share.dart';
+
+void _shareRecipe() {
+  Share.share(
+    'Check out this recipe: $title\n\n$description\n\nLink: [App Link]'
+  );
+}
+
+// Paylaşım Butonu Widget'ı
+Widget _shareButton() {
+  return IconButton(
+    icon: Icon(Icons.share),
+    onPressed: _shareRecipe,
+  );
+}   */
+
+
+/* TARİF YAPIM SÜRECİ
+
+Widget _buildStepImages() {
+  List<String> stepImages = // Tarifin adımlarının görsel URL'leri
+  return ListView.builder(
+    shrinkWrap: true,
+    itemCount: stepImages.length,
+    itemBuilder: (context, index) {
+      return Image.network(
+        stepImages[index],
+        fit: BoxFit.cover,
+      );
+    },
+  );
+}  */
+

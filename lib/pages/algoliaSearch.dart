@@ -171,3 +171,54 @@ class _AlgoliaSearchPageState extends State<AlgoliaSearchPage> {
     );
   }
 }
+
+
+/* FİLTRELEME SEÇENEKLERİ İÇİN 
+
+class _AlgoliaSearchPageState extends State<AlgoliaSearchPage> {
+  // ... (Mevcut kodlarımız)
+  String selectedCategory = 'All';
+  List<String> categories = ['All', 'Breakfast', 'Lunch', 'Dinner', 'Dessert'];
+
+  void _updateSearch() {
+    if (_searchController.text.isNotEmpty) {
+      _performSearch(_searchController.text, selectedCategory);
+    }
+  }
+
+  void _performSearch(String searchText, String category) async {
+    setState(() => _searching = true);
+
+    AlgoliaQuery query = algolia.instance.index('recipes_index').search(searchText);
+    if (category != 'All') {
+      query = query.setFilters('category:$category');
+    }
+
+    // ... (Mevcut arama kodlarımız)
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        // ... (Mevcut widgetlarımız)
+        DropdownButton(
+          value: selectedCategory,
+          items: categories.map((String category) {
+            return DropdownMenuItem(
+              value: category,
+              child: Text(category),
+            );
+          }).toList(),
+          onChanged: (String? newValue) {
+            setState(() {
+              selectedCategory = newValue!;
+              _updateSearch();
+            });
+          },
+        ),
+        // ... (Kalan widgetlarımız)
+      ],
+    );
+  }
+}  */

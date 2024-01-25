@@ -518,3 +518,81 @@ class _AddRecipe extends State<AddRecipe> {
     );
   }
 }
+
+
+/* REHBERLİK , TARİF NASIL OLUŞTURULUR
+
+int _currentStep = 0;
+
+@override
+Widget build(BuildContext context) {
+  // ... (Mevcut Widget yapınız)
+
+  return Scaffold(
+    // ... (Diğer widgetlarınız)
+    body: Stepper(
+      currentStep: _currentStep,
+      onStepContinue: _currentStep < 5 ? () => setState(() => _currentStep += 1) : null,
+      onStepCancel: _currentStep > 0 ? () => setState(() => _currentStep -= 1) : null,
+      steps: _buildSteps(),
+    ),
+    // ... (Kalan widgetlarınız)
+  );
+}
+
+List<Step> _buildSteps() {
+  return [
+    Step(
+      title: Text('Recipe Name'),
+      content: recipeName(),
+      isActive: _currentStep >= 0,
+      state: _currentStep > 0 ? StepState.complete : StepState.indexed,
+    ),
+    // ... (Diğer adımlarınız)
+  ];
+}  */
+
+
+/* TARİF İÇİN ETİKETLER
+
+List<String> _tags = [];
+final TextEditingController _tagController = TextEditingController();
+
+@override
+Widget build(BuildContext context) {
+  // ... (Mevcut Widget yapınız)
+
+  return Scaffold(
+    // ... (Diğer widgetlarınız)
+    body: Column(
+      children: [
+        // ... (Diğer widgetlarınız)
+        TextField(
+          controller: _tagController,
+          decoration: InputDecoration(
+            labelText: 'Add Tag',
+            suffixIcon: IconButton(
+              icon: Icon(Icons.add),
+              onPressed: () {
+                if (_tagController.text.isNotEmpty) {
+                  setState(() {
+                    _tags.add(_tagController.text);
+                    _tagController.clear();
+                  });
+                }
+              },
+            ),
+          ),
+        ),
+        Wrap(
+          children: _tags.map((tag) => Chip(label: Text(tag))).toList(),
+        ),
+        // ... (Kalan widgetlarınız)
+      ],
+    ),
+  );
+}  */
+
+
+
+

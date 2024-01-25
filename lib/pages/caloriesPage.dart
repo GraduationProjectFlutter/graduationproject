@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:algolia/algolia.dart';
 import 'package:bitirme0/pages/recipeDetailsPage.dart';
 import 'package:bitirme0/pages/recipe_card.dart';
+import 'package:flutter/services.dart';
 
 // Algolia arama motoru için yapılandırma
 final Algolia algolia = Algolia.init(
@@ -176,3 +177,89 @@ class _CaloriesPageState extends State<CaloriesPage> {
     );
   }
 }
+
+
+
+  /*KALORİ FİLTRELEME
+
+  Slider(
+  min: 0,
+  max: 1000,
+  divisions: 10,
+  value: _minCalories,
+  onChanged: (value) {
+    setState(() {
+      _minCalories = value;
+    });
+  },
+),
+Slider(
+  min: 0,
+  max: 1000,
+  divisions: 10,
+  value: _maxCalories,
+  onChanged: (value) {
+    setState(() {
+      _maxCalories = value;
+    });
+  },
+),
+}  */
+
+
+ /* YEMEK TİPİNE GÖRE FİLTRELEME
+
+ String _selectedMealType = 'All';
+ var _mealTypes = ['All', 'Breakfast', 'Lunch', 'Dinner'];
+
+ DropdownButton(
+  value: _selectedMealType,
+  items: _mealTypes.map((String type) {
+    return DropdownMenuItem(
+      value: type,
+      child: Text(type),
+    );
+  }).toList(),
+  onChanged: (String? newValue) {
+    setState(() {
+      _selectedMealType = newValue!;
+    });
+  },
+) */
+
+
+
+/*  IsHealty VERİSİ EKLEME
+
+class RecipeCard extends StatelessWidget {
+  final String title;
+  final String rating;
+  final String cookTime;
+  final String thumbnailUrl;
+  final String recipeID;
+  final bool isFavorite;
+  final bool isHealthy; // Sağlıklı olduğunu belirten yeni özellik
+
+  RecipeCard({
+    Key? key,
+    required this.title,
+    required this.cookTime,
+    required this.rating,
+    required this.thumbnailUrl,
+    required this.recipeID,
+    required this.isFavorite,
+    this.isHealthy = false, // Varsayılan değeri false olarak ayarla
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: ListTile(
+        title: Text(title),
+        subtitle: Text(cookTime),
+        trailing: isHealthy ? Icon(Icons.favorite, color: Colors.red) : null,
+      ),
+    );
+  }
+}
+*/

@@ -106,3 +106,68 @@ class _FavoritesPageState extends State<FavoritesPage> {
     );
   }
 }
+
+
+/*FAVORİLERİ KATEGORİLERE AYIRMAK İÇİN
+
+List<String> categories = ["All", "Breakfast", "Lunch", "Dinner", "Dessert"];
+String selectedCategory = "All";
+
+Widget _buildCategoryMenu() {
+  return DropdownButton<String>(
+    value: selectedCategory,
+    items: categories.map<DropdownMenuItem<String>>((String value) {
+      return DropdownMenuItem<String>(
+        value: value,
+        child: Text(value),
+      );
+    }).toList(),
+    onChanged: (String? newValue) {
+      setState(() {
+        selectedCategory = newValue!;
+        _filterFavoritesByCategory();
+      });
+    },
+  );
+}
+
+void _filterFavoritesByCategory() {
+  if (selectedCategory == "All") {
+    // Tüm favorileri göster
+  } else {
+    // Seçilen kategoriye göre filtrele
+  }
+}   */
+
+
+/*  FAVORİ TARİFLERİ ARASINDA ARAMA YAPMAK (SEARCH)
+
+String searchQuery = "";
+
+Widget _buildSearchBar() {
+  return TextField(
+    onChanged: (value) {
+      setState(() {
+        searchQuery = value;
+        _searchInFavorites();
+      });
+    },
+    decoration: InputDecoration(
+      hintText: 'Search in favorites...',
+      prefixIcon: Icon(Icons.search),
+    ),
+  );
+}
+
+void _searchInFavorites() {
+  // Arama sorgusuna göre favorileri filtreleyin
+} */
+
+
+/* FAVORİ TARİFLER İÇİN ÖZEL NOTLAR EKLEMEK İÇİN
+
+void _addNoteToFavorite(String recipeId) {
+  // Kullanıcıdan not alıp, bu notu ilgili tarife ekleyin
+  // Örneğin: Bir AlertDialog ile kullanıcıdan not alın ve Firestore'a kaydedin
+}  */
+

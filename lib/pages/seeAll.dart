@@ -173,3 +173,128 @@ class _SeeAllState extends State<seeAll> {
     );
   }
 }
+
+
+
+
+/* FİLTRELEME İÇİN DROPDOWN MENÜMÜZ
+String _selectedDifficulty = 'All';
+List<String> _difficulties = ['All', 'Easy', 'Medium', 'Hard'];
+
+@override
+Widget build(BuildContext context) {
+  return Scaffold(
+    appBar: AppBar(
+      title: Text('Recommended Recipes'),
+      actions: [
+        DropdownButton(
+          value: _selectedDifficulty,
+          items: _difficulties.map((String difficulty) {
+            return DropdownMenuItem(
+              value: difficulty,
+              child: Text(difficulty),
+            );
+          }).toList(),
+          onChanged: (String? newValue) {
+            setState(() {
+              _selectedDifficulty = newValue!;
+              _loadRecipes(); // Tarifleri yeniden yükler
+            });
+          },
+        ),
+      ],
+    ),
+    // ... (diğer kodlarımız)
+  );
+}
+
+// Tarifler yüklenirken uyguladığımız filtreleme
+Future<void> _loadRecipes() async {
+  try {
+    Query query = _firestore.collection('recipes');
+    if (_selectedDifficulty != 'All') {
+      query = query.where('difficulty', isEqualTo: _selectedDifficulty);
+    }
+    QuerySnapshot querySnapshot = await query.get();
+
+    // ... (Diğer kodlarımız)
+  }
+}   */
+
+
+/* SIRALAM İÇİN DROPDOWN MENÜMÜZ
+String _selectedSorting = 'Popularity';
+List<String> _sortingOptions = ['Popularity', 'Newest', 'Lowest Calories'];
+
+@override
+Widget build(BuildContext context) {
+  return Scaffold(
+    appBar: AppBar(
+      title: Text('Recommended Recipes'),
+      actions: [
+        DropdownButton(
+          value: _selectedSorting,
+          items: _sortingOptions.map((String option) {
+            return DropdownMenuItem(
+              value: option,
+              child: Text(option),
+            );
+          }).toList(),
+          onChanged: (String? newValue) {
+            setState(() {
+              _selectedSorting = newValue!;
+              _loadRecipes(); // Tarifleri yeniden yükler
+            });
+          },
+        ),
+      ],
+    ),
+    // ... (Diğer kodlar)
+  );
+}
+
+// Tarifleri yüklerken sıralama uygular
+Future<void> _loadRecipes() async {
+  try {
+    Query query = _firestore.collection('recipes');
+    switch (_selectedSorting) {
+      case 'Newest':
+        query = query.orderBy('createdDate', descending: true);
+        break;
+      case 'Lowest Calories':
+        query = query.orderBy('calories', descending: false);
+        break;
+      // Varsayılan olarak popülerliğe göre sırala
+      default:
+        query = query.orderBy('clickCount', descending: true);
+        break;
+    }
+    QuerySnapshot querySnapshot = await query.get();
+
+    // ... (Diğer kodlar)
+  }
+}    */
+
+
+/*  TARİFLERİN GÖRSELİNİ DAHA FAZLA ZENGİNLEŞTİRMEK İÇİN
+
+// RecipeCard widget'ını güncelleme
+class RecipeCard extends StatelessWidget {
+  final int cookTime;
+  final double rating;
+
+  //Constuctor ve diğer metodlarımız.
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: ListTile(
+        title: Text(title),
+        subtitle: Text('$cookTime min | Rating: $rating'),
+        leading: Image.network(thumbnailUrl, fit: BoxFit.cover),
+        // ... (Diğer özelliklerimiz)
+      ),
+    );
+  }
+}  */
+
