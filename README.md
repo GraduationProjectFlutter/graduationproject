@@ -1,16 +1,5 @@
-# bitirme0
+# Cookify:Al-powered Cooking Application
 
-A new Flutter project.
+This study examines the Cookify mobile application developed to meet modern kitchen needs. The main problem is that users can easily and effectively access various recipes. Cookify responds to this need with artificial intelligence-supported search features, personalized recipe suggestions, and features that take users' health information into account. During the development of the application, an intensive literature review was conducted on the shortcomings of existing recipe applications and how we can improve user experiences.
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Cookify is powered by Algolia's artificial intelligence-powered search technology, providing users with fast and accurate search results. Recipe recommendations based on health information and community-driven comment and rating systems further improve the user experience. The results show that Cookify better understands and meets users' needs compared to similar applications. The app has proven itself as an interactive and innovative platform for cooking enthusiasts.
